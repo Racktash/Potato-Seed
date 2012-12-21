@@ -45,9 +45,15 @@ if (REGISTRY_CAN_LOGIN)
                 $code1 = PNet::OneWayEncryption($code1, "session", "multi-md5");
                 $code2 = PNet::OneWayEncryption($code2, "session", "multi-md5");
 
-                $sql->query("INSERT INTO " . REGISTRY_TBLNAME_SESSIONS . " (id, userid, code1, code2, expires)
-                VALUES(NULL, '" . $sql->escape_string($id_on_record) . "', '" . $sql->escape_string($code1) . "', '" . $sql->escape_string($code2) . "', '" . $sql->escape_string(date("U") + 5184000) . "')");
 
+                $stmt = $sql->prepare("INSERT INTO " . REGISTRY_TBLNAME_SESSIONS . " (id, userid, code1, code2, expires)
+                    VALUES(NULL, ?, ?, ?, ?)");
+                $expiry = date("U") + 5184000;
+                $stmt->bind_param("issi", $id_on_record, $code1, $code2, $expiry);
+                $stmt->execute();
+                
+                $stmt->free_result();
+                
                 $next_year = date("U", mktime(0, 0, 0, date("m") + 2, date("d"), date("Y"))); #cookie expiration date
                 //Set Cookies
                 # Set our cookies for our logged in user
@@ -80,10 +86,12 @@ if (REGISTRY_CAN_LOGIN)
         $sql = new mysqli(REGISTRY_DBVALUES_SERVER, REGISTRY_DBVALUES_USERNAME, REGISTRY_DBVALUES_PASSWORD, REGISTRY_DBVALUES_DATABASE);
 
         $logged_in_user_object = LoggedInUser::returnInstance();
-
-        $sql->query("DELETE FROM " . REGISTRY_TBLNAME_SESSIONS . "
-        WHERE userid='" . $sql->escape_string($logged_in_user_object->returnID()) . "'");
-
+        
+        $stmt = $sql->prepare("DELETE FROM ".REGISTRY_TBLNAME_SESSIONS."
+            WHERE userid=?");
+        $stmt->bind_param("i", $logged_in_user_object->returnID());
+        $stmt->execute();
+        $stmt->free_result();
 
         $sql->close();
     }//log out of this...
