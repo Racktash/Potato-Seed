@@ -3,6 +3,12 @@
 # The path to the major engine functions and classes
 define("REGISTRY_ENGINE_PATH", "potatonet/");
 
+
+//Cookies
+# The names of cookies
+define("REGISTRY_COOKIES_USER", "ps_user");
+define("REGISTRY_COOKIES_SESSION", "ps_session");
+
 //MySQL Table Names
 # The names of the tables used by PotatoNet
 define("REGISTRY_TBLNAME_USERS", "Users");

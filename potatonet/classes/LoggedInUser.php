@@ -37,6 +37,19 @@ class LoggedInUser
     {
         return self::$loggedin;
     }
+    
+    public static function returnGravatarString($pSize)
+    {
+        if(self::$loggedin)
+        {
+            return PNet::Gravatar(self::$instance->returnEmail(), $pSize);
+        }
+        else
+        {
+            return null;
+        }
+        
+    }
 
     private function __construct()
     {

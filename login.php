@@ -57,8 +57,8 @@ if (REGISTRY_CAN_LOGIN)
                 $next_year = date("U", mktime(0, 0, 0, date("m") + 2, date("d"), date("Y"))); #cookie expiration date
                 //Set Cookies
                 # Set our cookies for our logged in user
-                setcookie("user", psafe($id_on_record), time() + 31556926, REGISTRY_COOKIE_PATH, REGISTRY_COOKIE_DOMAIN);
-                setcookie("session", $code1 . "." . $code2, time() + 31556926, REGISTRY_COOKIE_PATH, REGISTRY_COOKIE_DOMAIN);
+                setcookie(REGISTRY_COOKIES_USER, psafe($id_on_record), time() + 31556926, REGISTRY_COOKIE_PATH, REGISTRY_COOKIE_DOMAIN);
+                setcookie(REGISTRY_COOKIES_SESSION, $code1 . "." . $code2, time() + 31556926, REGISTRY_COOKIE_PATH, REGISTRY_COOKIE_DOMAIN);
 
                 LoggedInUser::login($id_on_record);
             }

@@ -26,6 +26,15 @@ class PNet
             return REGISTRY_AVATAR_REPO . $pAvatar . ".jpg";
         }
     }
+    
+    
+    public static function Gravatar($pEmail, $pSize)
+    {
+        $email_md5 = md5(strtolower(trim($pEmail)));
+        $size = intval($pSize);
+        
+        return "http://www.gravatar.com/avatar/".$email_md5.".png?s=".$size;
+    }
 
     public static function OneWayEncryption($pen, $key, $mode = "sha512")
     {

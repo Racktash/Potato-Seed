@@ -27,6 +27,7 @@ class User extends Entity
             $this->tags = $row['tags'];
             $this->joinDate = $row['joinDate'];
             $this->banned = $row['banned'];
+            $this->email = $row['email'];
             $this->doesExist = true;
         }
         

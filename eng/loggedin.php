@@ -3,11 +3,11 @@
 //Logged In
 # This script is run to check whether or not a user is logged in or not
 
-if (isset($_COOKIE['user']) and isset($_COOKIE['session']))
+if (isset($_COOKIE[REGISTRY_COOKIES_USER]) and isset($_COOKIE[REGISTRY_COOKIES_SESSION]))
 {
-    $temp_user_id = psafe($_COOKIE['user']);
+    $temp_user_id = psafe($_COOKIE[REGISTRY_COOKIES_USER]);
 
-    $temp_sessions = explode(".", $_COOKIE['session']);
+    $temp_sessions = explode(".", $_COOKIE[REGISTRY_COOKIES_SESSION]);
     $temp_sessions[0] = psafe($temp_sessions[0]);
     $temp_sessions[1] = psafe($temp_sessions[1]);
 
