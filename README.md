@@ -1,6 +1,5 @@
-PotatoNet
-Open-source and lightweight PHP Framework
+PotatoSeed
 
-PotatoNet is intended to be a super lightweight framework to allow for powerful, user-focussed websites.
+Lightweight user framework, written in PHP. PotatoSeed makes it easy to implement an online user system while remaining small and in the background.
 
-Upload all apart from .sql file.
+Ideal for creating web scripts and web-sites that require a user login system.
