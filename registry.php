@@ -2,7 +2,7 @@
 //Engine Path
 # The path to the major engine functions and classes
 define("REGISTRY_ENGINE_PATH", "potatonet/");
-
+define("REGISTRY_SEEDBASE_PATH", REGISTRY_ENGINE_PATH."seedbase/");
 
 //Cookies
 # The names of cookies
@@ -16,11 +16,10 @@ define("REGISTRY_TBLNAME_SESSIONS", "Sessions");
 
 //MySQL Details
 # The server, database and user details to connect to the MySQL server
-define("REGISTRY_DBVALUES_SERVER", "localhost");
-define("REGISTRY_DBVALUES_DATABASE", "DB");
-define("REGISTRY_DBVALUES_USERNAME", "USER");
-define("REGISTRY_DBVALUES_PASSWORD", "PASSWORD");
-
+if (file_exists("registry.sql.php"))
+    require("registry.sql.php");
+else
+    exit("Framework Error: Missing SQL Registry");
 
 //Site Settings
 # Settings for site
@@ -31,6 +30,14 @@ define("REGISTRY_LOGIN_PATH", "login.php");                 #path to login page
 define("REGISTRY_LOGIN_PATH", "login.php?logout=yes");      #path to log out page
 define("REGISTRY_REGISTER_PATH", "register.php");           #path to registration page
 define("REGISTRY_POST_LOGIN_REDIRECT_TO", "index.php");     #Page to go to after we've logged in
+
+
+//Login View Settings
+# Change the default view for Login
+define("REGISTRY_LOGIN_VIEW_PAGE", "logregpage.php");                        #the page view for the login page
+define("REGISTRY_LOGIN_VIEW_FORM", "loginform.php");                        #the form view for the login page
+define("REGISTRY_REGISTER_VIEW_PAGE", "logregpage.php");                     #the page view for the register page
+define("REGISTRY_REGISTER_VIEW_FORM", "regform.php");                     #the form view for the register page
 
 //Spam Question
 # A question asked at key areas to prevent spam bot access

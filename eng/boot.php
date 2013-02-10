@@ -41,7 +41,7 @@ $mysql->close();
 require(REGISTRY_ENGINE_PATH . "classes/classes.php");
 
 require("eng/functions.php");
-
+require("version.php");
 
 define("FRAMEWORK_VERSION_MAJOR", 1);
 define("FRAMEWORK_VERSION_MINOR", 0);

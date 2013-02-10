@@ -28,6 +28,7 @@ class User extends Entity
             $this->joinDate = $row['joinDate'];
             $this->banned = $row['banned'];
             $this->email = $row['email'];
+            $this->lower = $row['lower'];
             $this->doesExist = true;
         }
         
