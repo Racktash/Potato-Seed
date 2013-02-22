@@ -6,4 +6,4 @@ Ideal for creating web scripts and web-sites that require a user login system.
 
 Potato Seed is still actively being developed and refined, but the scope of the project is to provide a framework that will allow for a small, but powerful user system. It also provides methods and basic strucutres for more general areas of development -- such as sanatising strings -- but only where such methods benefit the writing of the user framework.
 
-This script is not intended to provide a structure (suc has MVC) for your development.
+This script is not intended to provide a structure (such has MVC) for your development.
