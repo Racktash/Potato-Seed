@@ -63,17 +63,20 @@ if (isset($_COOKIE[REGISTRY_COOKIES_USER]) and isset($_COOKIE[REGISTRY_COOKIES_S
         }
         else
         {
-            $grab_sessions = "SELECT *
+            $stmt = $sql->prepare("SELECT expires
                 FROM " . REGISTRY_TBLNAME_SESSIONS . "
-                WHERE code1 ='" . $sql->escape_string($temp_sessions[0]) . "'
-                AND code2 ='" . $sql->escape_string($temp_sessions[1]) . "'
-                AND userid='" . $sql->escape_string($temp_user_id) . "'
+                WHERE code1 = ?
+                AND code2 = ?
+                AND userid= ?
                     ORDER BY id DESC
-                    LIMIT 0, 1";
+                    LIMIT 0, 1");
+            $stmt->bind_param("ssi", $temp_sessions[0], $temp_sessions[1], $temp_user_id);
 
-            $session_results = $sql->query($grab_sessions);
+            $stmt->bind_result($expires);
+            $stmt->execute();
+            $stmt->store_result();
 
-            if ($session_results->num_rows < 1)
+            if ($stmt->num_rows < 1)
             {
                 $temp_session_pass = false;
                 //echo "E5" . $temp_sessions[0] . $temp_sessions[1] ."num:" .$session_results->num_rows . "|";
@@ -81,9 +84,9 @@ if (isset($_COOKIE[REGISTRY_COOKIES_USER]) and isset($_COOKIE[REGISTRY_COOKIES_S
             }
             else
             {
-                while ($row = mysqli_fetch_array($session_results))
+                while ($row = $stmt->fetch())
                 {
-                    $expiry_on_register = $row['expires'];
+                    $expiry_on_register = $expires;
                 }
 
                 if ($expiry_on_register <= date("U"))
@@ -95,6 +98,8 @@ if (isset($_COOKIE[REGISTRY_COOKIES_USER]) and isset($_COOKIE[REGISTRY_COOKIES_S
                     //okay, no errors
                 }
             }
+            
+            $stmt->free_result();
         }//check we have sessions
     }
 
