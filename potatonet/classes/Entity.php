@@ -8,5 +8,10 @@ class Entity
         return $this->doesExist;
     }//return doesExist
     
+    public function returnID()
+    {
+        return $this->id;
+    }
+    
 }
 ?>

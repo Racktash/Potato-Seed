@@ -5,35 +5,43 @@ class User extends Entity
     
     public function __construct($pUserid, $pUsername="-999")
     {
-        $obj_sql = new mysqli(REGISTRY_DBVALUES_SERVER, REGISTRY_DBVALUES_USERNAME, REGISTRY_DBVALUES_PASSWORD, REGISTRY_DBVALUES_DATABASE);
+        $sql = new mysqli(REGISTRY_DBVALUES_SERVER, REGISTRY_DBVALUES_USERNAME, REGISTRY_DBVALUES_PASSWORD, REGISTRY_DBVALUES_DATABASE);
         if($pUsername == "-999")
         {
-            $user_details = $obj_sql->query("SELECT *
+            $stmt = $sql->prepare("SELECT id, username, lower, email, password, avatar, admin, tags, joinDate, banned
                 FROM ".REGISTRY_TBLNAME_USERS."
-                    WHERE id ='".$obj_sql->escape_string($pUserid)."'");
+                WHERE id = ?");
+            $stmt->bind_param("i", $pUserid);
+            
         }//user the userid to locate the user
         else
         {
-            
+            PNet::EngineError("Username search support not added yet!");
+            exit();
         }//use username to locate
         
-        while($row = mysqli_fetch_array($user_details))
+        $stmt->bind_result($id, $username, $lower, $email, $password, $avatar, $admin, $tags, $joinDate, $banned);
+        $stmt->execute();
+        
+        while($row = $stmt->fetch())
         {
-            $this->id = $row['id'];
-            $this->username = $row['username'];
-            $this->password = $row['password'];
-            $this->avatar = $row['avatar'];
-            $this->admin = $row['admin'];
-            $this->tags = $row['tags'];
-            $this->joinDate = $row['joinDate'];
-            $this->banned = $row['banned'];
+            $this->id = $id;
+            $this->username = $username;
+            $this->password = $password;
+            $this->avatar = $avatar;
+            $this->admin = $admin;
+            $this->tags = $tags;
+            $this->joinDate = $joinDate;
+            $this->banned = $banned;
+            $this->email = $email;
+            $this->lower = $lower;
             $this->doesExist = true;
         }
         
         
+        $stmt->free_result();
         
-        
-        $obj_sql->close();
+        $sql->close();
         //TODO -- load in the variables from the SQL command above
         
     }

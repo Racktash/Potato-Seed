@@ -57,6 +57,17 @@ class PNet
         return $encrypted_item;
     }
 
+    //Create a crash if not running a specific framework version
+    # Useful is you want to ensure your script works only for a specific version of PotatoSeed
+    public static function RequireFrameworkVersion($pVersion)
+    {
+        if($pVersion != FRAMEWORK_VERSION)
+        {
+            self::EngineError("This functino is not supported by this version of the framework.");
+            exit();
+        }
+    }
+    
     private function __construct()
     {
         //empty constructor   
