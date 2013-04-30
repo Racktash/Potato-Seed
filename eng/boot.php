@@ -38,7 +38,7 @@ if ($mysql->connect_errno > 0)
 $mysql->close();
 //End
 
-require(REGISTRY_ENGINE_PATH . "classes/classes.php");
+require(REGISTRY_ENGINE_PATH . "classes.php");
 
 require("eng/functions.php");
 require("version.php");
