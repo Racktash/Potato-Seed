@@ -30,14 +30,7 @@ if (isset($_COOKIE[REGISTRY_COOKIES_USER]) and isset($_COOKIE[REGISTRY_COOKIES_S
     if (is_numeric($temp_user_id))
     {
         $temp_user_object = new User($temp_user_id);
-        if ($temp_user_object->returnDoesExist())
-        {
-            if ($temp_user_object->returnBanned())
-            {
-                $temp_loggedin = false;
-            }//user is marked as banned, so they cannot log in
-        }//user account exists...
-        else
+        if (!$temp_user_object->returnDoesExist())
         {
             $temp_loggedin = false;
         }//user account doesn't exist, log in has failed...

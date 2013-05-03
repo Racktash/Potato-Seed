@@ -2,14 +2,6 @@
 
 class PNet
 {
-
-    public static function EngineVersion()
-    {
-        return FRAMEWORK_VERSION_MAJOR . FRAMEWORK_VERSION_MINOR;
-    }
-
-//return the engine version number
-
     public static function EngineError($pString)
     {
         echo "<p><strong>Engine Error:</strong> " . $pString . "</p>";
@@ -63,7 +55,7 @@ class PNet
     {
         if($pVersion != FRAMEWORK_VERSION)
         {
-            self::EngineError("This functino is not supported by this version of the framework.");
+            self::EngineError("This function is not supported by this version of the framework.");
             exit();
         }
     }
