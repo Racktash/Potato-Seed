@@ -11,7 +11,7 @@ class LoggedInUser
         {
             self::$instance = new User($pUserid);
             self::$loggedin = true;
-            self::$admin = self::$instance->returnAdmin();
+            self::$admin = self::$instance->getAdmin();
         }
         else
         {
@@ -21,13 +21,13 @@ class LoggedInUser
         }//checker
     }
     
-    public static function returnAdmin()
+    public static function getAdmin()
     {
         if(self::$loggedin)
             return self::$admin;
     }
     
-    public static function returnInstance()
+    public static function getInstance()
     {
         if(self::$loggedin)
             return self::$instance;

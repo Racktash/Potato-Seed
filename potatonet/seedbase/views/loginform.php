@@ -2,7 +2,7 @@
 if (BOOT != "yes")
     exit();
 
-$val_errors = $controller_object->returnValidationErrors();
+$val_errors = $controller_object->getValidationErrors();
 ?>
 
 <?php

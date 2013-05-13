@@ -14,11 +14,11 @@ class login_model extends loginreg_model
         # Remove all active sessions from database
         $sql = new mysqli(REGISTRY_DBVALUES_SERVER, REGISTRY_DBVALUES_USERNAME, REGISTRY_DBVALUES_PASSWORD, REGISTRY_DBVALUES_DATABASE);
 
-        $logged_in_user_object = LoggedInUser::returnInstance();
+        $logged_in_user_object = LoggedInUser::getInstance();
 
         $stmt = $sql->prepare("DELETE FROM " . REGISTRY_TBLNAME_SESSIONS . "
             WHERE userid=?");
-        $stmt->bind_param("i", $logged_in_user_object->returnID());
+        $stmt->bind_param("i", $logged_in_user_object->getID());
         $stmt->execute();
         $stmt->free_result();
 
@@ -34,7 +34,7 @@ class login_model extends loginreg_model
         else
         {
             $user_object = new User($this->userid);
-            if ($user_object->returnPassword() == PNet::OneWayEncryption($pPassword, $user_object->returnLower()))
+            if ($user_object->getPassword() == PNet::OneWayEncryption($pPassword, $user_object->getLower()))
             {
                 return true;
             }//password matches, when encrypted, the password on record

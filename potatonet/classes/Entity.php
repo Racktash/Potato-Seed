@@ -3,12 +3,12 @@ class Entity
 {
     protected $id, $doesExist=false;
     
-    public function returnDoesExist()
+    public function getDoesExist()
     {
         return $this->doesExist;
-    }//return doesExist
+    }
     
-    public function returnID()
+    public function get1D()
     {
         return $this->id;
     }

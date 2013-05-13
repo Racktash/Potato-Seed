@@ -7,32 +7,32 @@ abstract class Controller
     
     protected $validation_errors = array();
 
-    public function returnModel()
+    public function getModel()
     {
         return $this->model;
     }
 
-    public function returnView()
+    public function getView()
     {
         return $this->view;
     }
     
-    public function returnPageTitle()
+    public function getPageTitle()
     {
         return $this->page_title;
     }
     
-    public function returnInnerView()
+    public function getInnerView()
     {
         return $this->inner_view;
     }
 
-    public function returnPage()
+    public function getPage()
     {
         return $this->page;
     }
     
-    public function returnValidationErrors()
+    public function getValidationErrors()
     {
         return $this->validation_errors;
     }

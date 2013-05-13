@@ -42,47 +42,47 @@ class User extends Entity
         $sql->close();
     }
 
-    public function returnID()
+    public function getID()
     {
         return $this->id;
     }
     
-    public function returnUsername()
+    public function getUsername()
     {
         return $this->username;
     }
     
-    public function returnLower()
+    public function getLower()
     {
         return $this->lower;
     }
     
-    public function returnEmail()
+    public function getEmail()
     {
         return $this->email;
     }
     
-    public function returnPassword()
+    public function getPassword()
     {
         return $this->password;
     }
     
-    public function returnAvatar()
+    public function getAvatar()
     {
         return $this->avatar;
     }
     
-    public function returnAdmin()
+    public function getAdmin()
     {
         return $this->admin;
     }
     
-    public function returnTags()
+    public function getTags()
     {
         return $this->tags;
     }
     
-    public function returnJoinDate()
+    public function getJoinDate()
     {
         return $this->joinDate;
     }
