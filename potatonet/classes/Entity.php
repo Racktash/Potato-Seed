@@ -8,7 +8,7 @@ class Entity
         return $this->doesExist;
     }
     
-    public function get1D()
+    public function getID()
     {
         return $this->id;
     }
