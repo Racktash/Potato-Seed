@@ -73,7 +73,7 @@ class Validator
 		if(trim($this->string_to_test) == null)
 		{
 			$this->is_valid = false;
-			$this->error_string[] = "string is empty";
+			$this->error_string[] = "empty";
 		}
 	}
 
