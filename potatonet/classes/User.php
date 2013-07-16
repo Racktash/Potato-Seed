@@ -1,14 +1,14 @@
 <?php
 class User extends Entity
 {
-    protected $username, $lower, $email, $password, $avatar, $admin, $tags, $joinDate, $banned;
+    protected $username, $lower, $email, $password, $avatar, $admin, $tags, $joinDate, $banned, $legacypassword;
     
     public function __construct($pUserid, $pUsername="-999")
     {
         $sql = new mysqli(REGISTRY_DBVALUES_SERVER, REGISTRY_DBVALUES_USERNAME, REGISTRY_DBVALUES_PASSWORD, REGISTRY_DBVALUES_DATABASE);
         if($pUsername == "-999")
         {
-            $stmt = $sql->prepare("SELECT id, username, lower, email, password, avatar, admin, tags, joinDate, banned
+            $stmt = $sql->prepare("SELECT id, username, lower, email, password, avatar, admin, tags, joinDate, banned, legacypassword
                 FROM ".REGISTRY_TBLNAME_USERS."
                 WHERE id = ?");
             $stmt->bind_param("i", $pUserid);
@@ -20,7 +20,7 @@ class User extends Entity
             exit();
         }
         
-        $stmt->bind_result($id, $username, $lower, $email, $password, $avatar, $admin, $tags, $joinDate, $banned);
+        $stmt->bind_result($id, $username, $lower, $email, $password, $avatar, $admin, $tags, $joinDate, $banned, $legacypassword);
         $stmt->execute();
         
         while($row = $stmt->fetch())
@@ -35,6 +35,7 @@ class User extends Entity
             $this->banned = $banned;
             $this->email = $email;
             $this->lower = $lower;
+            $this->legacypassword = $legacypassword;
             $this->doesExist = true;
         }
         
@@ -42,11 +43,6 @@ class User extends Entity
         $sql->close();
     }
 
-    public function getID()
-    {
-        return $this->id;
-    }
-    
     public function getUsername()
     {
         return $this->username;
@@ -85,6 +81,11 @@ class User extends Entity
     public function getJoinDate()
     {
         return $this->joinDate;
+    }
+
+    public function getLegacyPassword()
+    {
+	return $this->legacypassword;
     }
 }
 ?>

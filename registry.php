@@ -27,7 +27,7 @@ define("REGISTRY_AVATAR_REPO", "");
 define("REGISTRY_CAN_REGISTER", true);                      #can the user register from this script?
 define("REGISTRY_CAN_LOGIN", true);                         #can the user log in from this script?
 define("REGISTRY_LOGIN_PATH", "login.php");                 #path to login page
-define("REGISTRY_LOGIN_PATH", "login.php?logout=yes");      #path to log out page
+define("REGISTRY_LOGOUT_PATH", "login.php?logout=yes");     #path to log out page
 define("REGISTRY_REGISTER_PATH", "register.php");           #path to registration page
 define("REGISTRY_POST_LOGIN_REDIRECT_TO", "index.php");     #Page to go to after we've logged in
 
