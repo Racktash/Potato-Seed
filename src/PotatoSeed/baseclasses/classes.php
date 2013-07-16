@@ -1,7 +1,5 @@
 <?php
 require_once(REGISTRY_ENGINE_PATH."classes/PNet.php");
-require_once(REGISTRY_ENGINE_PATH."classes/Entity.php");
-require_once(REGISTRY_ENGINE_PATH."classes/User.php");
 require_once(REGISTRY_ENGINE_PATH."classes/LoggedInUser.php");
 require_once(REGISTRY_ENGINE_PATH."classes/Controller.php");
 require_once(REGISTRY_ENGINE_PATH."classes/Validator.php");
