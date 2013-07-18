@@ -1,7 +1,8 @@
 <?php
-
 //Logged In
 # This script is run to check whether or not a user is logged in or not
+$users = new Users_Model(new mysqli(REGISTRY_DBVALUES_SERVER, REGISTRY_DBVALUES_USERNAME, REGISTRY_DBVALUES_PASSWORD, REGISTRY_DBVALUES_DATABASE));
+
 
 if (isset($_COOKIE[REGISTRY_COOKIES_USER]) and isset($_COOKIE[REGISTRY_COOKIES_SESSION]))
 {
@@ -29,8 +30,7 @@ if (isset($_COOKIE[REGISTRY_COOKIES_USER]) and isset($_COOKIE[REGISTRY_COOKIES_S
     # Checks that the user exists and isn't banned
     if (is_numeric($temp_user_id))
     {
-        $temp_user_object = new User($temp_user_id);
-        if (!$temp_user_object->getDoesExist())
+        if ($users->userExists($temp_user_id))
         {
             $temp_loggedin = false;
         }//user account doesn't exist, log in has failed...

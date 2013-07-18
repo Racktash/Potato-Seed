@@ -2,46 +2,38 @@
 
 class LoggedInUser
 {
+	private $user_id;
+	private $loggedin = false;
 
-    private static $instance = null, $loggedin = false, $admin = 0;
+	public static function login($user_id)
+	{
+		if (self::$instance == null and self::$loggedin == false)
+		{
+			self::$user_id = $user_id;
+			self::$loggedin = true;
+		}
+		else
+		{
+			throw new Exception("Attempts to create two logged in users! Revise code.");
+			exit();
+		}
+	}
 
-    public static function login($pUserid)
-    {
-        if(self::$instance == null and self::$loggedin == false)
-        {
-            self::$instance = new User($pUserid);
-            self::$loggedin = true;
-            self::$admin = self::$instance->getAdmin();
-        }
-        else
-        {
-            //already initialised...
-            PNet::EngineError("Attempts to create two logged in users! Revise code.");
-            exit();
-        }//checker
-    }
-    
-    public static function getAdmin()
-    {
-        if(self::$loggedin)
-            return self::$admin;
-    }
-    
-    public static function getInstance()
-    {
-        if(self::$loggedin)
-            return self::$instance;
-    }
-    
-    public static function isLoggedin()
-    {
-        return self::$loggedin;
-    }
+	public static function getUserID()
+	{
+		if (self::$loggedin)
+			return self::$user_id;
+	}
 
-    private function __construct()
-    {
-        //can't be instantiated...
-    }
+	public static function isLoggedin()
+	{
+		return self::$loggedin;
+	}
+
+	private function __construct()
+	{
+		//can't be instantiated...
+	}
 
 }
 

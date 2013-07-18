@@ -8,6 +8,7 @@ class Seed_Loader
 		if (get_magic_quotes_gpc())
 			self::stripMagicQuotes();
 
+		self::loadBaseClasses();
 		self::loadDataContainers();
 		self::checkDatabase();
 		self::loadHelperFunctions();
@@ -30,6 +31,11 @@ class Seed_Loader
 			$_COOKIE[$key] = stripslashes($value);
 	}
 
+	private static function loadBaseClasses()
+	{
+		require(REGISTRY_ENGINE_PATH . "baseclasses/Model.php");
+	}
+	
 	private static function loadDataContainers()
 	{
 		require(REGISTRY_ENGINE_PATH . "datacontainers/User.php");
