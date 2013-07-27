@@ -1,6 +1,6 @@
 <?php
 
-require_once(REGISTRY_SEEDBASE_PATH . "models/login_model.php");
+require_once(REGISTRY_ENGINE_PATH . "models/login_model.php");
 
 class controller_login extends Controller
 {

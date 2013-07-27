@@ -1,6 +1,6 @@
 <?php
 
-require_once(REGISTRY_SEEDBASE_PATH . "models/loginreg_model.php");
+require_once(REGISTRY_ENGINE_PATH . "models/loginreg_model.php");
 
 class login_model extends loginreg_model
 {

@@ -9,7 +9,7 @@ if(BOOT != "yes")
     </head>
     <body>
         <?php
-            require(REGISTRY_SEEDBASE_PATH."views/".$controller_object->getInnerView());
+            require(REGISTRY_ENGINE_PATH."views/".$controller_object->getInnerView());
         ?>
     </body>
 </html>

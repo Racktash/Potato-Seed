@@ -2,8 +2,8 @@
 
 class LoggedInUser
 {
-	private $user_id;
-	private $loggedin = false;
+	private static $user_id;
+	private static $loggedin = false;
 
 	public static function login($user_id)
 	{

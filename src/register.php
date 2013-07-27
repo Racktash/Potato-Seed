@@ -1,6 +1,6 @@
 <?php
 require("eng/boot.php");
-require_once(REGISTRY_SEEDBASE_PATH."controllers/register.php");
+require_once(REGISTRY_ENGINE_PATH."controllers/register.php");
 
 if (REGISTRY_CAN_REGISTER)
 {
@@ -11,7 +11,7 @@ if (REGISTRY_CAN_REGISTER)
     $controller_object->execute();
     
     //Display page view as defined in the registry
-    require(REGISTRY_SEEDBASE_PATH."views/".REGISTRY_REGISTER_VIEW_PAGE);
+    require(REGISTRY_ENGINE_PATH."views/".REGISTRY_REGISTER_VIEW_PAGE);
     
 }//check if we are allowed to login
 ?>

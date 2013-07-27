@@ -1,6 +1,6 @@
 <?php
 
-require_once(REGISTRY_SEEDBASE_PATH . "models/register_model.php");
+require_once(REGISTRY_ENGINE_PATH . "models/register_model.php");
 
 class controller_register extends Controller
 {

@@ -12,8 +12,10 @@ class Seed_Loader
 		self::loadDataContainers();
 		self::checkDatabase();
 		self::loadHelperFunctions();
+		self::loadBaseModels();
 		self::loadVersionFile();
 		self::loadLoggedIn();
+		self::markSuccessfulBoot();
 	}
 
 	private static function stripMagicQuotes()
@@ -33,7 +35,10 @@ class Seed_Loader
 
 	private static function loadBaseClasses()
 	{
+		echo "Loading base classes...";
+		require(REGISTRY_ENGINE_PATH . "baseclasses/Controller.php");
 		require(REGISTRY_ENGINE_PATH . "baseclasses/Model.php");
+		require(REGISTRY_ENGINE_PATH . "baseclasses/LoggedInUser.php");
 	}
 	
 	private static function loadDataContainers()
@@ -51,6 +56,11 @@ class Seed_Loader
 		require(REGISTRY_ENGINE_PATH . "functions.php");
 	}
 
+	private static function loadBaseModels()
+	{
+		require(REGISTRY_ENGINE_PATH . "models/Users_Model.php");
+	}
+
 	private static function loadVersionFile()
 	{
 		require("version.php");
@@ -59,6 +69,11 @@ class Seed_Loader
 	private static function loadLoggedIn()
 	{
 		require(REGISTRY_ENGINE_PATH . "loggedin.php");
+	}
+
+	private static function markSuccessfulBoot()
+	{
+		define("BOOT", true);
 	}
 
 }
