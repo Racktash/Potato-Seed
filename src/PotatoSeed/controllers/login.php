@@ -1,6 +1,6 @@
 <?php
 
-require_once(REGISTRY_ENGINE_PATH . "models/login_model.php");
+require_once(REGISTRY_ENGINE_PATH . "models/Login_Model.php");
 
 class controller_login extends Controller
 {
@@ -9,7 +9,7 @@ class controller_login extends Controller
 
 	public function execute()
 	{
-		$this->model = new login_model();
+		$this->model = new Login_Model(new mysqli(REGISTRY_DBVALUES_SERVER, REGISTRY_DBVALUES_USERNAME, REGISTRY_DBVALUES_PASSWORD, REGISTRY_DBVALUES_DATABASE));
 
 		$this->viewLoginform();
 

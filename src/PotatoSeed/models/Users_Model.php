@@ -34,6 +34,16 @@ class Users_Model extends Model
 		return new User($username, $email, $join_date);
 	}
 
+	protected function fetchUserPassword($user_id)
+	{
+		return $this->fetchUserValue($user_id, "password");
+	}
+
+	protected function fetchUserLowercaseUsername($user_id)
+	{
+		return $this->fetchUserValue($user_id, "lower");
+	}
+
 	private function fetchUserValue($user_id, $value)
 	{
 		$stmt = $this->connection->prepare("SELECT ".$value." FROM ".REGISTRY_TBLNAME_USERS." WHERE id = ?");
