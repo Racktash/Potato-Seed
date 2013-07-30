@@ -17,7 +17,10 @@ class controller_login extends Controller
 		$logout = $_GET['logout'];
 
 		if ($logout == "yes" and LoggedInUser::isLoggedin())
-			$this->logout();
+		{
+			$user_id = LoggedInUser::getUserID();
+			$this->logout($user_id);
+		}
 
 		if (LoggedInUser::isLoggedin() and $logout != "yes")
 			$this->alreadyLoggedin();
@@ -41,14 +44,12 @@ class controller_login extends Controller
 		exit();
 	}
 
-	private function logout()
+	private function logout($user_id)
 	{
-		//Cookie Clearout
-		# Remove our cookies
-		setcookie("user", "", time() - 3600, REGISTRY_COOKIE_PATH, REGISTRY_COOKIE_DOMAIN);
-		setcookie("session", "", time() - 3600, REGISTRY_COOKIE_PATH, REGISTRY_COOKIE_DOMAIN);
+		setcookie(REGISTRY_COOKIES_USER, "", time() - 3600, REGISTRY_COOKIE_PATH, REGISTRY_COOKIE_DOMAIN);
+		setcookie(REGISTRY_COOKIES_SESSION, "", time() - 3600, REGISTRY_COOKIE_PATH, REGISTRY_COOKIE_DOMAIN);
 
-		$this->model->logout();
+		$this->model->logout($user_id);
 	}
 
 	private function attemptLogin()
@@ -57,24 +58,28 @@ class controller_login extends Controller
 		$username_lowercase = strtolower($username);
 		$password = $_POST['password'];
 
-		if (!$this->model->doesUserExist($username))
+		if (!$this->model->userNameExists($username))
 		{
 			$this->login_errors = true;
 			$this->validation_errors[] = "Couldn't log in - no user with that username could be found.";
 		}// we have no users...
 		else
 		{
-			if ($this->model->doesPasswordMatch($password))
+			$user_id = $this->model->fetchUserID($username);
+			if ($this->model->doesPasswordMatch($user_id, $password))
 			{
-				$this->model->createSession();
+				$this->model->createSession($user_id);
 
-				LoggedInUser::login($id_on_record);
+				LoggedInUser::login($user_id);
 				$this->alreadyLoggedin();
 			}
+			/*
 			else if ($this->model->doesPasswordMatchLegacy($password))
 			{
 				$this->displayLegacyPasswordScreen();
 			}
+			 * 
+			 */
 			else
 			{
 				$this->login_errors = true;

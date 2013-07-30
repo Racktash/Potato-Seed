@@ -1,7 +1,24 @@
 <?php
 class Users_Model extends Model
 {
+	public function userNameExists($user_name)
+	{
+		$user_name = strtolower($user_name);
 
+		$stmt = $this->connection->prepare("SELECT COUNT(id) FROM ".REGISTRY_TBLNAME_USERS." WHERE lower = ?");
+
+		$stmt->bind_param("s", $user_name);
+		$stmt->bind_result($count);
+
+		if(!$stmt->execute())
+			throw new Exception("Unable to retrieve user details from database!");
+
+		$stmt->fetch();
+		$stmt->free_result();
+
+		return ($count > 0);
+	}
+	
 	public function userExists($user_id)
 	{
 		$stmt = $this->connection->prepare("SELECT COUNT(id) FROM ".REGISTRY_TBLNAME_USERS." WHERE id = ?");
@@ -16,6 +33,24 @@ class Users_Model extends Model
 		$stmt->free_result();
 
 		return ($count > 0);
+	}
+
+	public function fetchUserID($username)
+	{
+		$username = strtolower($username);
+
+		$stmt = $this->connection->prepare("SELECT id FROM ".REGISTRY_TBLNAME_USERS." WHERE lower = ?");
+
+		$stmt->bind_param("s", $username);
+		$stmt->bind_result($user_id);
+
+		if(!$stmt->execute())
+			throw new Exception("Unable to retrieve user details from database!");
+
+		$stmt->fetch();
+		$stmt->free_result();
+
+		return $user_id;
 	}
 	
 	public function fetchUser($user_id)

@@ -3,13 +3,11 @@
 class Login_Model extends Users_Model
 {
 
-	public function logout()
+	public function logout($user_id)
 	{
-		$logged_in_user_id = LoggedInUser::getUserID();
-
 		$stmt = $this->connection->prepare("DELETE FROM " . REGISTRY_TBLNAME_SESSIONS . "
 						    WHERE userid=?");
-		$stmt->bind_param("i", $logged_in_user_object->getID());
+		$stmt->bind_param("i", $user_id);
 
 		$stmt->execute();
 	}

@@ -35,6 +35,7 @@ class Seed_Loader
 
 	private static function loadBaseClasses()
 	{
+		require(REGISTRY_ENGINE_PATH . "baseclasses/PNet.php");
 		require(REGISTRY_ENGINE_PATH . "baseclasses/Controller.php");
 		require(REGISTRY_ENGINE_PATH . "baseclasses/Model.php");
 		require(REGISTRY_ENGINE_PATH . "baseclasses/LoggedInUser.php");
