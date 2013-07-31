@@ -1,0 +1,3 @@
+*** Settings ***
+Resource 		../../settings.txt
+Resource 		../../keywords.txt

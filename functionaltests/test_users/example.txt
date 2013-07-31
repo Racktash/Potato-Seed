@@ -1,0 +1,5 @@
+#An example of a user configuration file...
+*** Variables ***
+
+${username}  example
+${password}  example

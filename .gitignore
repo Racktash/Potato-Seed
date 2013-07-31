@@ -1,2 +1,7 @@
 .swp
 nbproject
+functionaltests/settings.txt
+functionaltests/*.png
+functionaltests/*.html
+functionaltests/*.xml
+functionaltests/test_users/tintin.txt

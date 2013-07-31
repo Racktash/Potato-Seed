@@ -1,0 +1,11 @@
+*** Keywords ***
+
+Open Firefox
+	Open Browser  			${url}	
+
+Log In With Username
+	[Documentation]  		Example of use: Log In With Username  example  and password  example
+	[Arguments]  			${username}  ${str}  ${password}
+	Input Text  			username  			${username}
+	Input Text  			password  			${username}
+	Submit Form

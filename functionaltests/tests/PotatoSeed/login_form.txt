@@ -1,0 +1,12 @@
+*** Settings ***
+Documentation  					These tests test the login form, checking various validation checks
+Resource  					DEPENDENCIES.txt
+Suite Setup  					Open Firefox
+Suite Teardown  				Close Browser
+
+*** Test Cases ***
+
+Attempt Login with Valid User
+	Go To    			${url}login.php
+	Log In With Username  ${username}  and password  ${password}
+	Location Should Contain  index.php
