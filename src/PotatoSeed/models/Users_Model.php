@@ -19,6 +19,25 @@ class Users_Model extends Model
 		return ($count > 0);
 	}
 	
+	public function emailExists($email)
+	{
+		$email_filtered = strtolower($email);
+		$email_filtered = pemail($email);
+
+		$stmt = $this->connection->prepare("SELECT COUNT(id) FROM ".REGISTRY_TBLNAME_USERS." WHERE email = ?");
+
+		$stmt->bind_param("s", $email);
+		$stmt->bind_result($count);
+
+		if(!$stmt->execute())
+			throw new Exception("Unable to retrieve user details from database!");
+
+		$stmt->fetch();
+		$stmt->free_result();
+
+		return ($count > 0);
+	}
+	
 	public function userExists($user_id)
 	{
 		$stmt = $this->connection->prepare("SELECT COUNT(id) FROM ".REGISTRY_TBLNAME_USERS." WHERE id = ?");

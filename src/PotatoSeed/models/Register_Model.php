@@ -1,35 +1,22 @@
 <?php
 
-require_once(REGISTRY_ENGINE_PATH . "models/loginreg_model.php");
-
-class register_model extends loginreg_model
+class Register_Model extends Users_Model
 {
 
-    public function createUserAccount($pUsername, $pUsernameLower, $pEmail, $pPassword)
+    public function createUserAccount($username, $usernameLower, $email, $password)
     {
-        $sql = new mysqli(REGISTRY_DBVALUES_SERVER, REGISTRY_DBVALUES_USERNAME, REGISTRY_DBVALUES_PASSWORD, REGISTRY_DBVALUES_DATABASE);
-            
-        $password_encrypted = PNet::OneWayEncryption($pPassword, $pUsernameLower);
-
+        $password_encrypted = PNet::OneWayEncryption($password, $usernameLower);
         $date_to_post = date("d/m/Y/U");
 
-        $stmt = $sql->prepare("INSERT INTO " . REGISTRY_TBLNAME_USERS . " (id, username, lower, email, password, admin, joinDate)
+        $stmt = $this->connection->prepare("INSERT INTO " . REGISTRY_TBLNAME_USERS . " (id, username, lower, email, password, admin, joinDate)
                     VALUES(NULL, ?, ?, ?, ?, '0', ?)");
-        $stmt->bind_param("sssss", $pUsername, $pUsernameLower, $pEmail, $password_encrypted, $date_to_post);
+        $stmt->bind_param("sssss", $username, $usernameLower, $email, $password_encrypted, $date_to_post);
         
-        $stmt->execute();
+        if(!$stmt->execute())
+		throw new Exception("Error creating new account!");
         
-        //did we have any problems?
-        if($stmt->errno != 0)
-        {
-            PNet::EngineError("Error creating account! Please contact admin.");
-            exit();
-        }
-        
-        $stmt->free_result();
-        $sql->close();
-    }//create new user account
-
+        $this->connection->close();
+    }
 }
 
 ?>
