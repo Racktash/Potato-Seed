@@ -1,0 +1,37 @@
+Potato Seed - Logged In Checks Test Suite
+Test Scope: Checking various cookie values, to check validation against cookie modification functions
+
+====
+
+Test Suite Requirements:
+	* Potato Seed installed and configured
+	* Two test user accounts available
+	* Should create cookies by logging into one of the above account through normal channels
+
+====
+
+No Interference
+	=> Should be logged in
+
+No Session Cookie
+	-> Delete session cookie
+	-> Refresh page
+	=> Should now not be logged in
+	-> Login again
+
+No User Cookie
+	-> Delete user cookie
+	-> Refresh page
+	=> Should now not be logged in
+	-> Login again
+	
+User Cookie For Different User
+	-> Modify user cookie to contain ID of other user
+	=> Should now not be logged in
+	-> Login again
+
+Session Cookie Values For Different User
+	-> Login as other user in a separate instance
+	-> Modify session cookie to contain IDs of other user's session
+	=> Should now not be logged in
+	-> Login again

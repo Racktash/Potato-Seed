@@ -1,0 +1,41 @@
+Potato Seed - Login Checks Test Suite
+Test Scope: Testing checks for input submitted to login page
+
+====
+
+Test Suite Requirements:
+	* Potato Seed installed and configured
+	* Test user 'TestAccount87' created, with password 'vector3'
+
+====
+
+Non-existent User
+	-> Enter 'doesNotExist' into username
+	-> Provide any password
+	-> Submit
+	=> Error should appear, stating that the username does not exist
+
+No Username
+	-> Leave username field blank
+	-> Provide any password
+	-> Submit
+	=> Error should appear, stating username was not provided
+
+Valid Username; Invalid Password
+	-> Enter 'TestAccount87' into username field
+	-> Provide password 'password'
+	-> Submit
+	=> Error should appear, stating password is not correct
+
+Valid Username; No Password
+	-> Enter 'TestAccount87' into username field
+	-> Leave password field blank
+	-> Submit
+	=> Error should appear, stating password was not provided
+
+Valid Username; Valid Password
+	-> Enter 'TestAccount87' into username field
+	-> Provide password 'vector3'
+	-> Submit
+	=> Should log in
+	-> Logout again (?login.php&logout=yes)
