@@ -2,7 +2,7 @@
 
 require_once(REGISTRY_ENGINE_PATH . "models/Login_Model.php");
 
-class controller_login extends Controller
+class Controller_Login extends Controller
 {
 
 	private $login_errors = false;

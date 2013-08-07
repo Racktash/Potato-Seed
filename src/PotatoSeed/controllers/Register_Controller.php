@@ -2,7 +2,7 @@
 
 require_once(REGISTRY_ENGINE_PATH . "models/Register_Model.php");
 
-class controller_register extends Controller
+class Controller_Register extends Controller
 {
 
 	public function execute()

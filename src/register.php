@@ -3,12 +3,12 @@ require("registry.php");
 require(REGISTRY_ENGINE_PATH."Seed_Loader.php");
 Seed_Loader::initSeed();
 
-require_once(REGISTRY_ENGINE_PATH."controllers/register.php");
+require_once(REGISTRY_ENGINE_PATH."controllers/Register_Controller.php");
 
 if (REGISTRY_CAN_REGISTER)
 {
     //Create controller object
-    $controller_object = new controller_register();
+    $controller_object = new Controller_Register();
     
     //Perform controller execution
     $controller_object->execute();
