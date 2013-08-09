@@ -9,79 +9,11 @@ Test Suite Requirements:
 
 ====
 
-Username Blank
-	-> Fill in all fields except for username
-	-> Leave username blank
-	-> Submit
-	=> Error should appear, stating that the username must be specified
+Automated Tests
+	-> Run automated reg_form.txt tests
+	=> All tests should pass
 
-Password 1 Blank
-	-> Fill in all fields except for password1
-	-> Leave password1 blank
-	-> Submit
-	=> Error should appear, stating that the password must be specified
-
-Password 2 Blank
-	-> Fill in all fields except for password2
-	-> Leave password2 blank
-	-> Submit
-	=> Error should appear, stating that the password must be specified
-
-Email Blank
-	-> Fill in all fields except for email
-	-> Leave email blank
-	-> Submit
-	=> Error should appear, stating that the email must be specified
-
-Spam Question Blank
-	-> Fill in all fields except for spam
-	-> Leave spam blank
-	-> Submit
-	=> Error should appear, stating that the spam must be specified
-
-Email Invalid Format
-	-> Fill in all fields except for email
-	-> Fill in email field with 'notanemail'
-	-> Submit
-	=> Error should appear, stating that email is not valid 
-
-Email Invalid Format 2
-	-> Fill in all fields except for email
-	-> Fill in email field with 'notemail@email'
-	-> Submit
-	=> Error should appear, stating that email is not valid 
-
-Email Too Long
-	-> Fill in all fields except for email
-	-> Fill in email field with 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@aaaaaaaaaaaaaaaaaaa.com'
-	-> Submit
-	=> Error should appear, stating that email is too long
-
-Non-matching passwords
-	-> Fill in all fields except for the two password fields
-	-> Fill in password1 field with 'password' and password2 with 'someOtherPassword'
-	-> Submit
-	=> Error should appear, stating that the passwords did not match
-
-User Already In use
-	-> Fill in all fields except for user
-	-> Fill username field with 'TestAccount87'
-	-> Submit
-	=> Should state username is in use
-
-Email Already In use
-	-> Fill in all fields except for email address
-	-> Fill email field with 'testaccount87@test.com'
-	-> Submit
-	=> Should state email is in use
-
-Incorrect Spam Question
-	-> Fill in all fields except for spam question
-	-> Input the incorrect answer for the spam question
-	-> Submit
-	=> Should state spam was not filled in correctly
-
-Valid Details
+>Valid Details
 	-> Fill in all fields with valid, unique values
 	-> Submit
 	=> Registration should be complete

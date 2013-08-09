@@ -1,4 +1,4 @@
-.swp
+*.swp
 nbproject
 functionaltests/settings.txt
 functionaltests/*.png

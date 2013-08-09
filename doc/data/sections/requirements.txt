@@ -1,0 +1,3 @@
+ * PHP-5.3 or later
+ * MySQL Database
+ * A text editor

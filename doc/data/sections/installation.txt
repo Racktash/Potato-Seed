@@ -1,0 +1,5 @@
+**Work in Progress!**
+
+ * Extract the contents of src to the directory you wish Potato Seed to be installed to
+ * Configure registry.php
+ * Deploy to database
