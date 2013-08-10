@@ -14,8 +14,6 @@ class Register_Model extends Users_Model
         
         if(!$stmt->execute())
 		throw new Exception("Error creating new account!");
-        
-        $this->connection->close();
     }
 }
 

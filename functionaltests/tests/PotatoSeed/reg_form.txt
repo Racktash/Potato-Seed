@@ -24,9 +24,9 @@ Username Blank Except For Invalid Characters
 Username Too Long
 	Go To Registration Page
 	Fill In Registration Fields With Valid Data
-	Input Text  username  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa 
+	Input Text  username  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa 
 	Attempt Registration
-	Page Should Contain  Username is too long! Must be 80 characters or under!
+	Page Should Contain  Username cannot exceed 64 characters in length!
 
 User Already In Use
 	Go To Registration Page
@@ -102,7 +102,7 @@ Email Too Long
 	Fill In Registration Fields With Valid Data
 	Input Text  email  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@aaaaaaaaaaaaaaaaaaa.com
 	Attempt Registration
-	Page Should Contain  Email supplied was too long.
+	Page Should Contain  Email cannot exceed 64 characters in length!
 
 Email Already In Use
 	Go To Registration Page
@@ -114,7 +114,7 @@ Email Already In Use
 Email Already In Use -- Only Difference is illegal chars
 	Go To Registration Page
 	Fill In Registration Fields With Valid Data
-	Input Text  email  testaccount87@test.com$
+	Input Text  email  testaccount87$@test.com
 	Attempt Registration
 	Page Should Contain  Email is already being used by a registered account!
 

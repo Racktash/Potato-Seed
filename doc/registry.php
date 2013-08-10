@@ -6,9 +6,9 @@ define("REGISTRY_DATA_PATH", "data/");
 
 //Site Details
 define("REGISTRY_SITE_TITLE", "Potato Seed Documentation");
+define("REGISTRY_CONTENT_PARSER", "SnapEdit");
 
 //Site Display Settings
-define("REGISTRY_SITE_TEMPLATE", "docs2013.html");
-define("REGISTRY_SITE_STYLESHEET", "docs2013.css");
+define("REGISTRY_SITE_TEMPLATE", "docs2013");
 
 ?>

@@ -28,7 +28,15 @@ class Controller_Register extends Controller
 			{
 				if (!$this->attemptRegistration($username, $email, $pass1, $pass2))
 				{
-					$this->model->createUserAccount($username, $username_lower, $email, $pass1);
+					try
+					{
+						$this->model->createUserAccount($username, $username_lower, $email, $pass1);
+						$this->displaySuccessPage();
+					}
+					catch(Exception $e)
+					{
+						exit("Critical System error: " . $e->getMessage());
+					}
 				}
 				else
 				{
@@ -54,10 +62,10 @@ class Controller_Register extends Controller
 			$errors = true;
 			$this->validation_errors[] = "Username already in use!";
 		}
-		else if (strlen($username) > 80)
+		else if (strlen($username) > 64)
 		{
 			$errors = true;
-			$this->validation_errors[] = "Username cannot exceed 80 characters in length!";
+			$this->validation_errors[] = "Username cannot exceed 64 characters in length!";
 		}
 		else if ($username == null)
 		{
@@ -70,15 +78,20 @@ class Controller_Register extends Controller
 			$errors = true;
 			$this->validation_errors[] = "Email is already being used by a registered account!";
 		}
-		else if (strlen($email) > 255)
+		else if (strlen($email) > 64)
 		{
 			$errors = true;
-			$this->validation_errors[] = "Email cannot exceed 255 characters in length!";
+			$this->validation_errors[] = "Email cannot exceed 64 characters in length!";
 		}
 		else if ($email == null)
 		{
 			$errors = true;
 			$this->validation_errors[] = "Email field cannot be left blank and must contain alphanumeric characters!";
+		}
+		else if (!filter_var($email, FILTER_VALIDATE_EMAIL))
+		{
+			$errors = true;
+			$this->validation_errors[] = "Email supplied was not formatted correctly.";
 		}
 
 		//Validate Password
@@ -100,6 +113,11 @@ class Controller_Register extends Controller
 	private function displayForm()
 	{
 		$this->inner_view = REGISTRY_REGISTER_VIEW_FORM;
+	}
+
+	private function displaySuccessPage()
+	{
+		$this->inner_view = "registration_complete.php";
 	}
 
 }
