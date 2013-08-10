@@ -1,12 +1,46 @@
 *** Settings ***
-Documentation  					These tests test the login form, checking various validation checks
+Documentation  					These tests test the login form, checking user verification checks
 Resource  					DEPENDENCIES.txt
 Suite Setup  					Open Firefox
 Suite Teardown  				Close Browser
 
 *** Test Cases ***
 
-Attempt Login with Valid User
-	Go To    			${url}login.php
-	Log In With Username  ${username}  and password  ${password}
-	Location Should Contain  index.php
+
+Non-existent User
+	Go To Login Page
+	Fill In Login Fields  doesNotExist  password
+	Attempt Login
+	Page Should Contain  no user with that username could be found.
+
+No Username
+	Go To Login Page
+	Fill In Login Fields  ${EMPTY}  password
+	Attempt Login	
+	Page Should Contain  no user with that username could be found.
+
+Existent Username; Incorrect Password
+	Go To Login Page
+	Fill In Login Fields    TestAccount87  wrongPassword
+	Attempt Login
+	Page Should Contain  password does not match that which is on record.
+
+Existent Username; No Password
+	Go To Login Page
+	Fill In Login Fields  TestAccount87  wrongPassword
+	Attempt Login
+	Page Should Contain  password does not match that which is on record.
+
+
+*** Keywords ***
+
+Go To Login Page 
+	Go To    			${url}login.php?logout=yes
+
+Fill In Login Fields
+	[Arguments]  	${username}  ${password}
+	Input Text  username  ${username}
+	Input Text  password  ${password}
+
+Attempt Login
+	Click Element  xpath=//input[@type='submit']
