@@ -1,19 +1,27 @@
-#About
+# Potato Seed
 
-Potato Seed is a lightweight user framework, written in PHP.
+Potato Seed is a user account framework, written in PHP.
 
-Its footprint is small, but it allows you to write user-oriented web-sites easily.
+Seed is a lightweight framework, providing the bare basics to allow the creation of user-oriented websites, services and applications.
 
-##Quick Use
+Seed is an open-source project. Feel free to fork it, modify it and redistribute it. 
 
-Step 1: Initialise Potato Seed
+## Use
 
-     <?php
-     include("registry.php");
-     require(REGISTRY_ENGINE_PATH."Seed_Loader.php");
-     Seed_Loader::initSeed();
-     ?>
+A more in-depth guide will be published shortly. This section is intended to demonstrate the ease of integrating Potato Seed into your own system.
 
-Step 2: Write your application. You can check if a user is logged in with the following:
+	<?php
+	include("registry.php");
+	require(REGISTRY_ENGINE_PATH."Seed_Loader.php");
+	Seed_Loader::initSeed();
 
-     		if (LoggedInUser::isLoggedin())
+	if (LoggedInUser::isLoggedin())
+	{
+		echo "Hello, user!";
+	}
+	else
+	{
+		echo "You are not logged in. <a href='login.php'>Log in, pelase</a>!";
+	}
+
+	?>
