@@ -10,7 +10,7 @@ class Seed_Loader
 
 		self::loadBaseClasses();
 		self::loadDataContainers();
-		self::checkDatabase();
+		self::checkConnection();
 		self::loadHelperFunctions();
 		self::loadBaseModels();
 		self::loadVersionFile();
@@ -46,9 +46,14 @@ class Seed_Loader
 		require(REGISTRY_ENGINE_PATH . "datacontainers/User.php");
 	}
 
-	private static function checkDatabase()
+	private static function checkConnection()
 	{
-		echo "TODO -- check database!";
+		$msqli_test = new mysqli(REGISTRY_DBVALUES_SERVER, REGISTRY_DBVALUES_USERNAME, REGISTRY_DBVALUES_PASSWORD, REGISTRY_DBVALUES_DATABASE);
+
+		if ($mysqli->connect_errno)
+			exit("Critical error! Failed to establish connection!");
+		
+		$msqli_test->close();
 	}
 
 	private static function loadHelperFunctions()
