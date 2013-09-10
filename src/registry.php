@@ -33,10 +33,11 @@ define("REGISTRY_POST_LOGIN_REDIRECT_TO", "index.php");     #Page to go to after
 
 //Login View Settings
 # Change the default view for Login
-define("REGISTRY_LOGIN_VIEW_PAGE", "logregpage.php");                        #the page view for the login page
-define("REGISTRY_LOGIN_VIEW_FORM", "loginform.php");                        #the form view for the login page
-define("REGISTRY_REGISTER_VIEW_PAGE", "logregpage.php");                     #the page view for the register page
-define("REGISTRY_REGISTER_VIEW_FORM", "regform.php");                     #the form view for the register page
+define("REGISTRY_LOGIN_VIEW_PAGE", "logregpage.php");                        				#the page view for the login page
+define("REGISTRY_LOGIN_VIEW_FORM", "loginform.php");                        				#the form view for the login page
+define("REGISTRY_LOGIN_CHANGE_LEGACY_VIEW_FORM", "update_legacy_password.php");                         #the form view for the legacy password change page
+define("REGISTRY_REGISTER_VIEW_PAGE", "logregpage.php");                     				#the page view for the register page
+define("REGISTRY_REGISTER_VIEW_FORM", "regform.php");                     				#the form view for the register page
 
 //Spam Question
 # A question asked at key areas to prevent spam bot access

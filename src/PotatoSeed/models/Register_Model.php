@@ -5,7 +5,7 @@ class Register_Model extends Users_Model
 
     public function createUserAccount($username, $usernameLower, $email, $password)
     {
-        $password_encrypted = PNet::OneWayEncryption($password, $usernameLower);
+        $password_encrypted = $this->hashPassword($usernameLower, $password);
         $date_to_post = date("d/m/Y/U");
 
         $stmt = $this->connection->prepare("INSERT INTO " . REGISTRY_TBLNAME_USERS . " (id, username, lower, email, password, admin, joinDate)

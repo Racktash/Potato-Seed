@@ -73,13 +73,10 @@ class Controller_Login extends Controller
 				LoggedInUser::login($user_id);
 				$this->alreadyLoggedin();
 			}
-			/*
-			else if ($this->model->doesPasswordMatchLegacy($password))
+			else if ($this->model->doesPasswordMatchLegacy($user_id, $password))
 			{
 				$this->displayLegacyPasswordScreen();
 			}
-			 * 
-			 */
 			else
 			{
 				$this->login_errors = true;
@@ -91,7 +88,7 @@ class Controller_Login extends Controller
 	private function displayLegacyPasswordScreen()
 	{
 		$this->page_title = "Update Your Password";
-		$this->inner_view = "update_legacy_password.php";
+		$this->inner_view = REGISTRY_LOGIN_CHANGE_LEGACY_VIEW_FORM;
 	}
 
 	private function attemptUpdatePassword()
@@ -100,7 +97,7 @@ class Controller_Login extends Controller
 		$username_lowercase = strtolower($username);
 		$password = $_POST['password'];
 
-		if (!$this->model->doesUserExist($username))
+		if (!$this->model->userNameExists($username))
 		{
 			$this->displayLegacyPasswordScreen();
 			$this->login_errors = true;
@@ -108,9 +105,18 @@ class Controller_Login extends Controller
 		}
 		else
 		{
-			if ($this->model->doesPasswordMatchLegacy($password))
+			$user_id = $this->model->fetchUserID($username);
+			
+			if ($this->model->doesPasswordMatchLegacy($user_id, $password))
 			{
-				exit("TODO -- Add logic to update passwords if the two new ones are good enough...");
+				$password1 = $_POST['newpassword1'];
+				$password2 = $_POST['newpassword2'];
+
+				if($this->newPasswordsValid($password1, $password2))
+				{
+					$this->updatePassword($user_id, $password1);
+					$this->clearLegacyPassword($user_id);
+				}	
 			}
 			else
 			{
@@ -119,6 +125,34 @@ class Controller_Login extends Controller
 				$this->validation_errors[] = "Password does not match that which is on record.";
 			}
 		}
+	}
+
+	private function newPasswordsValid($password1, $password2)
+	{
+		if($password1 != $password2)
+		{
+			$this->addValidationError("The two new passwords must match!");
+			return false;
+		}
+		else if ($password1 == "" or $password1 == null)
+		{
+			$this->addValidationError("New password cannot be empty!");
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+
+	private function updatePassword($user_id, $password)
+	{
+		$this->model->updatePassword($user_id, $password);
+	}
+
+	private function clearLegacyPassword($user_id)
+	{
+		$this->model->removeLegacyPassword($user_id);
 	}
 
 

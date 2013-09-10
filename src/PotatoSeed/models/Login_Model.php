@@ -21,24 +21,15 @@ class Login_Model extends Users_Model
 		return ($user_password == $encrypted_inputted_password);
 	}
 
-	public function doesPasswordMatchLegacy($password)
+	public function doesPasswordMatchLegacy($user_id, $password)
 	{
-		if ($this->userid == null)
-		{
-			PNet::EngineError("You must perform a user existence check before performing a password match check!");
-		}
+		// If the password supplied matches the legacy password on
+		// record, and the legacy password isn't blank, then return
+		// true
+		if ($this->fetchUserLegacyPassword($user_id) == PNet::OneWayEncryption($password, null, "multi-md5") and $this->fetchUserLegacyPassword($user_id) != null)
+			return true;
 		else
-		{
-			$user_object = new User($this->userid);
-			if ($user_object->getLegacyPassword() == PNet::OneWayEncryption($password, null, "multi-md5") and $user_object->getLegacyPassword() != null)
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
+			return false;
 	}
 
 	public function createSession($user_id)
