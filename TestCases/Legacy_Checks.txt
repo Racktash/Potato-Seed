@@ -1,0 +1,22 @@
+****
+WIP!
+****
+
+
+Potato Seed - Login Checks For Legacy Password
+Test Scope: Testing checks for legacy password system
+
+====
+
+Test Suite Requirements:
+	* Potato Seed installed and configured
+	* Test user 'TestAccount87' created, with legacy password 'legTest'
+
+====
+
+Valid Username; Valid Password
+	-> Enter 'TestAccount87' into username field
+	-> Provide password 'test'
+	-> Submit
+	=> Should log in
+	-> Logout again (?login.php&logout=yes)

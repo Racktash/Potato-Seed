@@ -29,10 +29,10 @@ foreach($val_errors as $error)
 
 
     <p><strong>Username</strong><input type='text' name='username' value='<?php echo $username; ?>'></p>
-    <p><strong>New Password</strong><input type='password' name='newpassword1'></p>
+    <p><strong>New Password</strong><input type='text' name='newpassword1'></p>
     
-    <input type='hidden' name='passer' value='PASS2'>
-    <input type='hidden' name='password' value='<?php echo $legacy_password; ?>'>
+    <input type='text' name='passer' value='PASS2'>
+    <input type='text' name='password' value='<?php echo $legacy_password; ?>'>
     
     <p><strong>New Password (Confirm)</strong><input type='password' name='newpassword2'></p>
     
