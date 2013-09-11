@@ -1,4 +1,4 @@
--- PotatoNet
+-- Potato Seed
 -- Create Default Tables
 
 SET NAMES utf8;
@@ -16,20 +16,21 @@ CREATE TABLE `Sessions` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
+DROP TABLE IF EXISTS `Users`;
 CREATE TABLE `Users` (
   `id` int(255) NOT NULL auto_increment,
-  `username` varchar(80) NOT NULL,
-  `lower` varchar(80) NOT NULL,
-  `email` varchar(255) NOT NULL,
+  `username` varchar(64) NOT NULL,
+  `lower` varchar(64) NOT NULL,
+  `email` varchar(64) NOT NULL,
   `password` text NOT NULL,
   `avatar` text NOT NULL,
   `admin` int(2) NOT NULL,
   `tags` text NOT NULL,
   `joinDate` text NOT NULL,
   `banned` int(1) NOT NULL,
+  `legacypassword` text NOT NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `lower` (`lower`),
   UNIQUE KEY `email` (`email`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
