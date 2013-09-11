@@ -1,8 +1,3 @@
-****
-WIP!
-****
-
-
 Potato Seed - Login Checks For Legacy Password
 Test Scope: Testing checks for legacy password system
 
@@ -10,13 +5,127 @@ Test Scope: Testing checks for legacy password system
 
 Test Suite Requirements:
 	* Potato Seed installed and configured
-	* Test user 'TestAccount87' created, with legacy password 'legTest'
+	* Test user 'TestAccount87' created, with legacy password 'legTest' (for field: 'dbfecb2aef533cee610fb2685054a9d7'), and password 'test'
+	* Set to use the _debug version of legacy password reset
 
 ====
 
-Valid Username; Valid Password
+User Without LegacyPassword Cannot Reset Password
+	-> Remove legacy password from 'TestAccount87'
+	-> Enter 'TestAccount87' into username field
+	-> Provide password 'legTest'
+	-> Submit
+	=> Login should fail, no password reset should appear
+	-> Replace legacy password from 'TestAccount87'
+
+User With LegacyPassword Can Reset Password
+	-> Enter 'TestAccount87' into username field
+	-> Provide password 'legTest'
+	-> Submit
+	=> Should go to password reset
+
+
+Password Reset Form: Submit form without username
+	-> Enter 'TestAccount87' into username field
+	-> Provide password 'legTest'
+	-> Submit
+	=> Should go to password reset
+	-> Remove content of username field
+	-> Fill in other fields with appropriate data
+	-> Click 'update'
+	=> Error -- no user with that username found
+
+Password Reset Form: Submit form with username that doesn't have legacy password
+	-> Ensure 'TestAccount88' has no legacypassword set
+	-> Enter 'TestAccount87' into username field
+	-> Provide password 'legTest'
+	-> Submit
+	=> Should go to password reset
+	-> Put 'TestAccount88' into Username field
+	-> Fill in other fields with appropriate data
+	-> Click 'update'
+	=> Error -- Should state that password does not match that which is on record
+
+
+Password Reset Form: Submit form with no passwords
+	-> Enter 'TestAccount87' into username field
+	-> Provide password 'legTest'
+	-> Submit
+	=> Should go to password reset
+	-> Leave both password fields empty
+	-> Fill in other fields with appropriate data
+	-> Click 'update'
+	=> Error -- New password cannot be empty!
+
+Password Reset Form: Submit form with password1 empty
+	-> Enter 'TestAccount87' into username field
+	-> Provide password 'legTest'
+	-> Submit
+	=> Should go to password reset
+	-> Leave password field 1 empty
+	-> Fill in other fields with appropriate data
+	-> Click 'update'
+	=> Error -- New password cannot be empty!
+
+Password Reset Form: Submit form with password2 empty
+	-> Enter 'TestAccount87' into username field
+	-> Provide password 'legTest'
+	-> Submit
+	=> Should go to password reset
+	-> Leave password field 2 empty
+	-> Fill in other fields with appropriate data
+	-> Click 'update'
+	=> Error -- The two new passwords must match!
+
+
+Password Reset Form: Submit form with different pass
+	-> Enter 'TestAccount87' into username field
+	-> Provide password 'legTest'
+	-> Submit
+	=> Should go to password reset
+	-> Enter 'PASS' into field originally containing 'PASS2'
+	-> Fill in other fields with appropriate data
+	-> Click 'update'
+	=> Error -- form should reset
+
+
+Password Reset Form: Submit form with no legacy password
+	-> Enter 'TestAccount87' into username field
+	-> Provide password 'legTest'
+	-> Submit
+	=> Should go to password reset
+	-> Make empty the field containing the legacy password
+	-> Fill in other fields with appropriate data
+	-> Click 'update'
+	=> Error -- password does not match that which is on record
+
+Password Reset Form: Submit form with wrong legacy password
+	-> Enter 'TestAccount87' into username field
+	-> Provide password 'legTest'
+	-> Submit
+	=> Should go to password reset
+	-> Enter 'notLegPass' to legacy password field
+	-> Fill in other fields with appropriate data
+	-> Click 'update'
+	=> Error -- password does not match that which is on record
+
+
+Successful Change of Password
+	-> Change password field of 'TestAccount87' to a random value
 	-> Enter 'TestAccount87' into username field
 	-> Provide password 'test'
 	-> Submit
-	=> Should log in
-	-> Logout again (?login.php&logout=yes)
+	=> Should fail to login
+	-> Enter 'TestAccount87' into username field
+	-> Provide password 'legTest'
+	-> Submit
+	=> Should go to password reset
+	-> Supply new password 'test'
+	-> Fill in other fields with appropriate data
+	-> Click 'update'
+	=> Should return to login screen
+	-> Enter 'TestAccount87' into username field
+	-> Provide password 'test'
+	-> Submit
+	=> Should log in successfully 
+	=> Check database: legacypassword attribute should be empty
