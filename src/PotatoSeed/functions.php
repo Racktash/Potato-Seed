@@ -32,7 +32,7 @@ function pemail($pemail)
 
 function pdisplay($pdisplay)
 {
-    $pdisplay = htmlentities(stripslashes($pdisplay), ENT_QUOTES);
+    $pdisplay = htmlentities(stripslashes($pdisplay), ENT_QUOTES, 'UTF-8');
     return $pdisplay;
 }
 
