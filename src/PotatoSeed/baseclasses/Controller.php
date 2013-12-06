@@ -3,8 +3,8 @@
 abstract class Controller
 {
 
-	protected $view, $inner_view = null, $page_title = null;
-	protected $validation_errors = array();
+	private $view, $inner_view = null, $page_title = null;
+	private $validation_errors = array();
 
 	public function getView()
 	{
@@ -19,6 +19,21 @@ abstract class Controller
 	public function getInnerView()
 	{
 		return $this->inner_view;
+	}
+
+	public function setView($view)
+	{
+		$this->view = $view;
+	}
+
+	public function setPageTitle($page_title)
+	{
+		$this->page_title = $page_title;
+	}
+
+	public function setInnerView($inner_view)
+	{
+		$this->inner_view = $inner_view;
 	}
 
 	public function getValidationErrors()

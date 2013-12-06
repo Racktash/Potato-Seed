@@ -48,11 +48,4 @@ define("REGISTRY_SPAM_ANSWER", "London");                               #not cas
 # Settings for cookie: path, domain etc...
 define("REGISTRY_COOKIE_DOMAIN", ".example.com");
 define("REGISTRY_COOKIE_PATH", "/");
-
-//Site Registry
-# For site or script specific registry values
-if (file_exists("registry_site.php"))
-    require("registry_site.php");
-else
-    exit("Framework Error: Missing Site Registry");
 ?>

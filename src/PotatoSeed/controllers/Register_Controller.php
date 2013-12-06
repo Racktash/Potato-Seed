@@ -112,12 +112,12 @@ class Controller_Register extends Controller
 
 	private function displayForm()
 	{
-		$this->inner_view = REGISTRY_REGISTER_VIEW_FORM;
+		$this->setInnerView(REGISTRY_REGISTER_VIEW_FORM);
 	}
 
 	private function displaySuccessPage()
 	{
-		$this->inner_view = "registration_complete.php";
+		$this->setInnerView("registration_complete.php");
 	}
 
 }

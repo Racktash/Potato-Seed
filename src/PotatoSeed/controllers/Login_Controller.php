@@ -33,8 +33,8 @@ class Controller_Login extends Controller
 
 	private function viewLoginform()
 	{
-		$this->page_title = "Log In";
-		$this->inner_view = "loginform.php";
+		$this->setPageTitle("Log In");
+		$this->setInnerView("loginform.php");
 	}
 
 	private function alreadyLoggedin()
@@ -87,8 +87,8 @@ class Controller_Login extends Controller
 
 	private function displayLegacyPasswordScreen()
 	{
-		$this->page_title = "Update Your Password";
-		$this->inner_view = REGISTRY_LOGIN_CHANGE_LEGACY_VIEW_FORM;
+		$this->setPageTitle("Update Your Password");
+		$this->setInnerView(REGISTRY_LOGIN_CHANGE_LEGACY_VIEW_FORM);
 	}
 
 	private function attemptUpdatePassword()
