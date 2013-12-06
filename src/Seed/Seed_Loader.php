@@ -8,11 +8,9 @@ class Seed_Loader
 		if (get_magic_quotes_gpc())
 			self::stripMagicQuotes();
 
-		self::loadBaseClasses();
-		self::loadDataContainers();
+		self::autoLoadClasses();
 		self::checkConnection();
 		self::loadHelperFunctions();
-		self::loadBaseModels();
 		self::loadVersionFile();
 		self::loadLoggedIn();
 		self::markSuccessfulBoot();
@@ -33,12 +31,25 @@ class Seed_Loader
 			$_COOKIE[$key] = stripslashes($value);
 	}
 
-	private static function loadBaseClasses()
+	private static function autoLoadClasses()
 	{
-		require(REGISTRY_ENGINE_PATH . "baseclasses/PNet.php");
-		require(REGISTRY_ENGINE_PATH . "baseclasses/Controller.php");
-		require(REGISTRY_ENGINE_PATH . "baseclasses/Model.php");
-		require(REGISTRY_ENGINE_PATH . "baseclasses/LoggedInUser.php");
+        function controller_autoloader($class)
+        {
+            if(substr($class, -10) == "Controller" and $class != "Controller")
+            {
+                include REGISTRY_ENGINE_PATH. 'controllers/' . $class . '.php';
+            }
+            else if(substr($class, -5) == "Model" and $class != "Model")
+            {
+                include REGISTRY_ENGINE_PATH. 'models/' . $class . '.php';
+            }
+            else
+            {
+                include REGISTRY_ENGINE_PATH. 'entities/' . $class . '.php';
+            }
+        }
+
+        spl_autoload_register('controller_autoloader');
 	}
 	
 	private static function loadDataContainers()

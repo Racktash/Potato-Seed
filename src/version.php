@@ -1,3 +1,3 @@
 <?php
-define("FRAMEWORK_VERSION", "2.0.1");
+define("FRAMEWORK_VERSION", "3.0.0");
 ?>

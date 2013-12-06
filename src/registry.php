@@ -1,7 +1,7 @@
 <?php
 //Engine Path
 # The path to the major engine functions and classes
-define("REGISTRY_ENGINE_PATH", "PotatoSeed/");
+define("REGISTRY_ENGINE_PATH", "Seed/");
 
 //Cookies
 # The names of cookies
