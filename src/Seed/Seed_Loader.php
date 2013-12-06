@@ -69,7 +69,8 @@ class Seed_Loader
 
 	private static function loadHelperFunctions()
 	{
-		require(REGISTRY_ENGINE_PATH . "functions.php");
+        foreach (glob(REGISTRY_ENGINE_PATH."lib/*.php") as $filename)
+            include $filename;
 	}
 
 	private static function loadBaseModels()

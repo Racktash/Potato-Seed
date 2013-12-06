@@ -3,6 +3,8 @@
 # The path to the major engine functions and classes
 define("REGISTRY_ENGINE_PATH", "Seed/");
 
+require 'data/config/sql.php';
+
 //Cookies
 # The names of cookies
 define("REGISTRY_COOKIES_USER", "ps_user");
@@ -13,12 +15,6 @@ define("REGISTRY_COOKIES_SESSION", "ps_session");
 define("REGISTRY_TBLNAME_USERS", "Users");
 define("REGISTRY_TBLNAME_SESSIONS", "Sessions");
 
-//MySQL Details
-# The server, database and user details to connect to the MySQL server
-if (file_exists("registry.sql.php"))
-    require("registry.sql.php");
-else
-    exit("Framework Error: Missing SQL Registry");
 
 //Site Settings
 # Settings for site

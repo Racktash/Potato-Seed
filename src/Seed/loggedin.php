@@ -6,11 +6,11 @@ $users = new Users_Model(new mysqli(REGISTRY_DBVALUES_SERVER, REGISTRY_DBVALUES_
 
 if (isset($_COOKIE[REGISTRY_COOKIES_USER]) and isset($_COOKIE[REGISTRY_COOKIES_SESSION]))
 {
-    $temp_user_id = psafe($_COOKIE[REGISTRY_COOKIES_USER]);
+    $temp_user_id = display\alphanum($_COOKIE[REGISTRY_COOKIES_USER]);
 
     $temp_sessions = explode(".", $_COOKIE[REGISTRY_COOKIES_SESSION]);
-    $temp_sessions[0] = psafe($temp_sessions[0]);
-    $temp_sessions[1] = psafe($temp_sessions[1]);
+    $temp_sessions[0] = display\alphanum($temp_sessions[0]);
+    $temp_sessions[1] = display\alphanum($temp_sessions[1]);
 
     if (sizeof($temp_sessions) > 2)
     {

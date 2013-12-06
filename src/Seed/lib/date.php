@@ -1,41 +1,5 @@
 <?php
-function punix($punix)
-{
-    $punix = strtolower($punix);
-    $punix = preg_replace("/[^a-zA-Z0-9_-_\s]/", "", $punix);
-    $punix = preg_replace("/ /", "_", $punix);
-
-    return $punix;
-}
-
-function purl()
-{
-    return "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-}
-
-function psafe($psafe)
-{
-    $psafe = preg_replace("/[^a-zA-Z0-9\s]/", "", $psafe);
-    $psafe = preg_replace("/ /", "", $psafe);
-
-    return $psafe;
-}
-
-function pemail($pemail)
-{
-    $pemail = preg_replace("/[^a-zA-Z0-9---_-_@-@.-.\s]/", "", $pemail);
-    $pemail = preg_replace("/ /", "", $pemail);
-    $pemail = strtolower($pemail);
-
-    return $pemail;
-}
-
-function pdisplay($pdisplay)
-{
-    $pdisplay = htmlentities(stripslashes($pdisplay), ENT_COMPAT|ENT_SUBSTITUTE|ENT_QUOTES, 'UTF-8');
-    return $pdisplay;
-}
-
+namespace dt;
 function pstamp($nid, $taco)
 {
 

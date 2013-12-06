@@ -11,7 +11,7 @@ class Controller_Register extends Controller
 		$this->page_title = "Register";
 		$passer = $_POST['passer'];
 		$spam = $_POST['spam'];
-		$username = psafe($_POST['username']);
+		$username = display\alphanum($_POST['username']);
 		$username_lower = strtolower($username);
 		$pass1 = $_POST['pass1'];
 		$pass2 = $_POST['pass2'];

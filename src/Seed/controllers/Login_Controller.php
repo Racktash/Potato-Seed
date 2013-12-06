@@ -54,7 +54,7 @@ class Controller_Login extends Controller
 
 	private function attemptLogin()
 	{
-		$username = psafe($_POST['username']); #we check our username after it is stripped of non-[a-z0-9] characters
+		$username = display\alphanum($_POST['username']); #we check our username after it is stripped of non-[a-z0-9] characters
 		$username_lowercase = strtolower($username);
 		$password = $_POST['password'];
 
@@ -93,7 +93,7 @@ class Controller_Login extends Controller
 
 	private function attemptUpdatePassword()
 	{
-		$username = psafe($_POST['username']); #we check our username after it is stripped of non-[a-z0-9] characters
+		$username = display\alphanum($_POST['username']); #we check our username after it is stripped of non-[a-z0-9] characters
 		$username_lowercase = strtolower($username);
 		$password = $_POST['password'];
 
@@ -159,13 +159,13 @@ class Controller_Login extends Controller
 	public function getLegacyPassword()
 	{
 		$password = $_POST['password'];
-		return pdisplay($password);
+		return display\html($password);
 	}
 
 	public function getUsername()
 	{
 		$username = $_POST['username'];
-		$filtered_username = psafe($username);
+		$filtered_username = display\alphanum($username);
 		return $filtered_username;
 	}
 	
