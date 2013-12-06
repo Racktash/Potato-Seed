@@ -1,91 +1,68 @@
 <?php
-class Users_Model extends Model
+class Users_Model extends DBModel
 {
 	public function userNameExists($user_name)
 	{
 		$user_name = strtolower($user_name);
 
-		$stmt = $this->connection->prepare("SELECT COUNT(id) FROM ".REGISTRY_TBLNAME_USERS." WHERE lower = ?");
+		$stmt = $this->handle->prepare("SELECT id FROM ".REGISTRY_TBLNAME_USERS." WHERE lower = ?");
+		$stmt->bindParam(1, $user_name, PDO::PARAM_STR);
+        $this->execute($stmt);
 
-		$stmt->bind_param("s", $user_name);
-		$stmt->bind_result($count);
+        while($row = $stmt->fetch(PDO::FETCH_OBJ))
+            $result[] = $row;
 
-		if(!$stmt->execute())
-			throw new Exception("Unable to retrieve user details from database!");
 
-		$stmt->fetch();
-		$stmt->free_result();
-
-		return ($count > 0);
+		return (sizeof($result) > 0);
 	}
 	
 	public function emailExists($email)
 	{
 		$email_filtered = strtolower($email);
-		$email_filtered = pemail($email);
+		$email_filtered = display\email($email);
 
-		$stmt = $this->connection->prepare("SELECT COUNT(id) FROM ".REGISTRY_TBLNAME_USERS." WHERE email = ?");
+		$stmt = $this->handle->prepare("SELECT id FROM ".REGISTRY_TBLNAME_USERS." WHERE email = ?");
+		$stmt->bindParam(1, $email_filtered, PDO::PARAM_STR);
+        $this->execute($stmt);
 
-		$stmt->bind_param("s", $email);
-		$stmt->bind_result($count);
+        while($row = $stmt->fetch(PDO::FETCH_OBJ))
+            $result[] = $row;
 
-		if(!$stmt->execute())
-			throw new Exception("Unable to retrieve user details from database!");
-
-		$stmt->fetch();
-		$stmt->free_result();
-
-		return ($count > 0);
+		return (sizeof($result) > 0);
 	}
 	
 	public function userExists($user_id)
 	{
-		$stmt = $this->connection->prepare("SELECT COUNT(id) FROM ".REGISTRY_TBLNAME_USERS." WHERE id = ?");
+		$stmt = $this->handle->prepare("SELECT id FROM ".REGISTRY_TBLNAME_USERS." WHERE id = ?");
+		$stmt->bindParam(1, $user_id, PDO::PARAM_INT);
+        $this->execute($stmt);
 
-		$stmt->bind_param("i", $user_id);
-		$stmt->bind_result($count);
+        while($row = $stmt->fetch(PDO::FETCH_OBJ))
+            $result[] = $row;
 
-		if(!$stmt->execute())
-			throw new Exception("Unable to retrieve user details from database!");
-
-		$stmt->fetch();
-		$stmt->free_result();
-
-		return ($count > 0);
+		return (sizeof($result) > 0);
 	}
 
 	public function fetchUserID($username)
 	{
-		$username = strtolower($username);
+        $username = strtolower($username);
 
-		$stmt = $this->connection->prepare("SELECT id FROM ".REGISTRY_TBLNAME_USERS." WHERE lower = ?");
-
-		$stmt->bind_param("s", $username);
-		$stmt->bind_result($user_id);
-
-		if(!$stmt->execute())
-			throw new Exception("Unable to retrieve user details from database!");
-
-		$stmt->fetch();
-		$stmt->free_result();
-
-		return $user_id;
+        $stmt = $this->handle->prepare("SELECT id FROM ".REGISTRY_TBLNAME_USERS." WHERE lower = ?");
+        $stmt->bindParam(1, $username, PDO::PARAM_STR);
+        $this->execute($stmt);
+        
+        $result = $stmt->fetch(PDO::FETCH_OBJ);
+        return $result->id;
 	}
 	
 	public function fetchUser($user_id)
 	{
-		$stmt = $this->connection->prepare("SELECT username, email, joindate FROM ".REGISTRY_TBLNAME_USERS." WHERE id = ?");
+        $stmt = $this->handle->prepare("SELECT username, lower, email, joinDate FROM " . REGISTRY_TBLNAME_USERS . " WHERE id = ?");
+        $stmt->bindParam(1, $user_id, PDO::PARAM_INT);
+        $this->execute($stmt);
 
-		$stmt->bind_param("i", $user_id);
-		$stmt->bind_result($username, $email, $join_date);
-
-		if(!$stmt->execute())
-			throw new Exception("Unable to retrieve user details from database!");
-
-		$stmt->fetch();
-		$stmt->free_result();
-
-		return new User($username, $email, $join_date);
+        $result = $stmt->fetch(PDO::FETCH_OBJ);
+        return $result;
 	}
 
 	protected function fetchUserPassword($user_id)
@@ -105,18 +82,12 @@ class Users_Model extends Model
 
 	private function fetchUserValue($user_id, $value)
 	{
-		$stmt = $this->connection->prepare("SELECT ".$value." FROM ".REGISTRY_TBLNAME_USERS." WHERE id = ?");
+        $stmt = $this->handle->prepare("SELECT ".$value." FROM " . REGISTRY_TBLNAME_USERS . " WHERE id = ?");
+        $stmt->bindParam(1, $user_id, PDO::PARAM_INT);
+        $this->execute($stmt);
 
-		$stmt->bind_param("i", $user_id);
-		$stmt->bind_result($atr_value);
-
-		if(!$stmt->execute())
-			throw new Exception("Unable to retrieve ".$value." for user!");
-
-		$stmt->fetch();
-		$stmt->free_result();
-
-		return $atr_value;
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result[$value];
 	}
 
 	public function updatePassword($user_id, $new_password)
@@ -124,22 +95,17 @@ class Users_Model extends Model
 		$username = $this->fetchUserValue($user_id, "username");
 		$hashed_password = $this->hashPassword($username, $new_password);
 
-		$stmt = $this->connection->prepare("UPDATE ".REGISTRY_TBLNAME_USERS." SET password = ? WHERE id = ?");
-
-		$stmt->bind_param("si", $hashed_password, $user_id);
-		
-		if(!$stmt->execute())
-			throw new Exception("Unable to update password!");
+		$stmt = $this->handle->prepare("UPDATE ".REGISTRY_TBLNAME_USERS." SET password = ? WHERE id = ?");
+        $stmt->bindParam(1, $hashed_password, PDO::PARAM_STR);
+        $stmt->bindParam(2, $user_id, PDO::PARAM_INT);
+        $this->execute($stmt);
 	}
 
 	public function removeLegacyPassword($user_id)
 	{
-		$stmt = $this->connection->prepare("UPDATE ".REGISTRY_TBLNAME_USERS." SET legacypassword = '' WHERE id = ?");
-
-		$stmt->bind_param("i", $user_id);
-		
-		if(!$stmt->execute())
-			throw new Exception("Unable to remove legacy password!");
+		$stmt = $this->preapre->prepare("UPDATE ".REGISTRY_TBLNAME_USERS." SET legacypassword = '' WHERE id = ?");
+        $stmt->bindParam(1, $user_id, PDO::PARAM_INT);
+        $this->execute($stmt);
 	}
 
 	protected function hashPassword($username, $password)

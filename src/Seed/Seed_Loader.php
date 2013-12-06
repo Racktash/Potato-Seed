@@ -35,11 +35,11 @@ class Seed_Loader
 	{
         function controller_autoloader($class)
         {
-            if(substr($class, -10) == "Controller" and $class != "Controller")
+            if(substr($class, -11) == "_Controller")
             {
                 include REGISTRY_ENGINE_PATH. 'controllers/' . $class . '.php';
             }
-            else if(substr($class, -5) == "Model" and $class != "Model")
+            else if(substr($class, -6) == "_Model")
             {
                 include REGISTRY_ENGINE_PATH. 'models/' . $class . '.php';
             }
@@ -85,7 +85,7 @@ class Seed_Loader
 
 	private static function loadLoggedIn()
 	{
-		require(REGISTRY_ENGINE_PATH . "loggedin.php");
+//		require(REGISTRY_ENGINE_PATH . "loggedin.php");
 	}
 
 	private static function markSuccessfulBoot()
