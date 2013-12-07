@@ -14,6 +14,7 @@ define("REGISTRY_COOKIES_SESSION", "ps_session");
 # The names of the tables used by PotatoNet
 define("REGISTRY_TBLNAME_USERS", "Users");
 define("REGISTRY_TBLNAME_SESSIONS", "Sessions");
+define("REGISTRY_TBLNAME_RESETTICKETS", "ResetTickets");
 
 
 //Site Settings

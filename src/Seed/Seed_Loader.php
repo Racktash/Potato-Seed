@@ -85,7 +85,7 @@ class Seed_Loader
 
 	private static function loadLoggedIn()
 	{
-//		require(REGISTRY_ENGINE_PATH . "loggedin.php");
+		require(REGISTRY_ENGINE_PATH . "loggedin.php");
 	}
 
 	private static function markSuccessfulBoot()

@@ -7,8 +7,12 @@ require_once(REGISTRY_ENGINE_PATH."controllers/Login_Controller.php");
 
 if (REGISTRY_CAN_LOGIN)
 {
-    //Create controller object
-    $controller_object = new Controller_Login();
+    $reset = $_GET['reset'];
+
+    if($reset == "yes")
+        $controller_object = new PasswordReset_Controller();
+    else
+        $controller_object = new Login_Controller();
     
     //Perform controller execution
     $controller_object->execute();

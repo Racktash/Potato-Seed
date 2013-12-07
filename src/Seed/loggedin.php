@@ -1,7 +1,7 @@
 <?php
 //Logged In
 # This script is run to check whether or not a user is logged in or not
-$users = new Users_Model(new mysqli(REGISTRY_DBVALUES_SERVER, REGISTRY_DBVALUES_USERNAME, REGISTRY_DBVALUES_PASSWORD, REGISTRY_DBVALUES_DATABASE));
+$users = new Users_Model(db\newPDO());
 
 
 if (isset($_COOKIE[REGISTRY_COOKIES_USER]) and isset($_COOKIE[REGISTRY_COOKIES_SESSION]))

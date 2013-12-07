@@ -5,11 +5,10 @@ class Login_Model extends Users_Model
 
 	public function logout($user_id)
 	{
-		$stmt = $this->connection->prepare("DELETE FROM " . REGISTRY_TBLNAME_SESSIONS . "
-						    WHERE userid=?");
-		$stmt->bind_param("i", $user_id);
-
-		$stmt->execute();
+		$stmt = $this->handle->prepare("DELETE FROM " . REGISTRY_TBLNAME_SESSIONS . "
+						    WHERE userid = ?");
+		$stmt->bindParam(1, $user_id, PDO::PARAM_INT);
+        $this->execute($stmt);
 	}
 
 	public function doesPasswordMatch($user_id, $password)
@@ -42,11 +41,13 @@ class Login_Model extends Users_Model
 
 		$expiry = date("U") + 5184000;
 
-		$stmt = $this->connection->prepare("INSERT INTO " . REGISTRY_TBLNAME_SESSIONS . " (id, userid, code1, code2, expires)
+		$stmt = $this->handle->prepare("INSERT INTO " . REGISTRY_TBLNAME_SESSIONS . " (id, userid, code1, code2, expires)
 							    VALUES(NULL, ?, ?, ?, ?)");
-		$stmt->bind_param("issi", $user_id, $code1, $code2, $expiry);
-
-		$stmt->execute();
+        $stmt->bindParam(1, $user_id, PDO::PARAM_INT);
+        $stmt->bindParam(2, $code1, PDO::PARAM_STR);
+        $stmt->bindParam(3, $code2, PDO::PARAM_STR);
+        $stmt->bindParam(4, $expiry, PDO::PARAM_INT);
+        $this->execute($stmt);
 
 		$this->createCookie($code1.".".$code2, $user_id);
 	}
