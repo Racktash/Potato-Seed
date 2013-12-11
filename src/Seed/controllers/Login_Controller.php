@@ -11,28 +11,29 @@ class Login_Controller extends Controller
 
         $this->viewLoginform();
 
-        $passer = $_POST['passer'];
-        $logout = $_GET['logout'];
-
-        if ($logout == "yes" and LoggedInUser::isLoggedin())
+        if ($this->logoutAttemptPresent() and LoggedInUser::isLoggedin())
         {
             $user_id = LoggedInUser::getUserID();
             $this->logout($user_id);
         }
 
-        if (LoggedInUser::isLoggedin() and $logout != "yes")
+        if ((LoggedInUser::isLoggedin()) and (!$this->logoutAttemptPresent()))
             $this->alreadyLoggedin();
 
-        if ($passer == "PASS")
-            $this->attemptLogin();
-        else if ($passer == "PASS2")
-            $this->attemptUpdatePassword();
+        if ($this->loginAttemptPresent()) $this->attemptLogin();
+        else if ($this->passUpdateAttemptPresent()) $this->attemptUpdatePassword();
     }
 
     private function viewLoginform()
     {
         $this->setPageTitle("Log In");
         $this->setInnerView("loginform.php");
+    }
+
+    private function logoutAttemptPresent()
+    {
+        if(!isset($_GET['logout'])) return false;
+        return ($_GET['logout'] == "yes");
     }
 
     private function alreadyLoggedin()
@@ -50,37 +51,51 @@ class Login_Controller extends Controller
         $this->login_mdl->logout($user_id);
     }
 
+    private function loginAttemptPresent()
+    {
+        if(!isset($_POST['passer'])) return false;
+        return ($_POST['passer'] == "PASS");
+    }
+
+    private function passUpdateAttemptPresent()
+    {
+        if(!isset($_POST['passer'])) return false;
+        return ($_POST['passer'] == "PASS");
+    }
+
     private function attemptLogin()
     {
-        $username = display\alphanum($_POST['username']); #we check our username after it is stripped of non-[a-z0-9] characters
+        #Check username after it is stripped of non-[A-Za-z0-9] characters
+        $username = display\alphanum($_POST['username']); 
+
         $username_lowercase = strtolower($username);
         $password = $_POST['password'];
-
-        if (!$this->login_mdl->userNameExists($username))
+    
+        $fail = function($error)
         {
             $this->login_errors = true;
-            $this->validation_errors[] = "Couldn't log in - no user with that username could be found.";
-        }// we have no users...
+            $this->addValidationError($error);
+        };
+
+        if(!$this->login_mdl->userNameExists($username)) $fail("Username does not exist!");
         else
         {
             $user_id = $this->login_mdl->fetchUserID($username);
-            if ($this->login_mdl->doesPasswordMatch($user_id, $password))
-            {
-                $this->login_mdl->createSession($user_id);
 
-                LoggedInUser::login($user_id);
-                $this->alreadyLoggedin();
-            }
+            if ($this->login_mdl->doesPasswordMatch($user_id, $password)) 
+                $this->completeLogin($user_id);
             else if ($this->login_mdl->doesPasswordMatchLegacy($user_id, $password))
-            {
                 $this->displayLegacyPasswordScreen();
-            }
-            else
-            {
-                $this->login_errors = true;
-                $this->validation_errors[] = "Couldn't log in - password does not match that which is on record.";
-            }
+            else $fail("Incorrect password!");
         }
+    }
+
+    private function completeLogin($user_id)
+    {
+        $this->login_mdl->createSession($user_id);
+
+        LoggedInUser::login($user_id);
+        $this->alreadyLoggedin();
     }
 
     private function displayLegacyPasswordScreen()
@@ -112,7 +127,7 @@ class Login_Controller extends Controller
 
                 if($this->newPasswordsValid($password1, $password2))
                 {
-                    $this->updatePassword($user_id, $password1);
+                    $this->login_mdl->updatePassword($user_id, $password1);
                     $this->clearLegacyPassword($user_id);
                 }   
             }
@@ -127,32 +142,21 @@ class Login_Controller extends Controller
 
     private function newPasswordsValid($password1, $password2)
     {
-        if($password1 != $password2)
+        $error = function ($error)
         {
-            $this->addValidationError("The two new passwords must match!");
+            $this->addValidationError($error);
             return false;
-        }
-        else if ($password1 == "" or $password1 == null)
-        {
-            $this->addValidationError("New password cannot be empty!");
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    }
+        };
 
-    private function updatePassword($user_id, $password)
-    {
-        $this->login_mdl->updatePassword($user_id, $password);
+        if($password1 != $password2) return $error("Passwords do not match!");
+        else if ($password1 == "" or $password1 == null) return $error("New password cannot be empty!");
+        else return true;
     }
 
     private function clearLegacyPassword($user_id)
     {
         $this->login_mdl->removeLegacyPassword($user_id);
     }
-
 
     public function getLegacyPassword()
     {
