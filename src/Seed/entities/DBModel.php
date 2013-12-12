@@ -17,5 +17,10 @@ abstract class DBModel
     {
         if(!$stmt->execute()) throw new Exception("Error executing SQL!");
     }
+
+    protected function executeParam($stmt, $param)
+    {
+        if(!$stmt->execute($param)) throw new Exception("Error executing SQL!");
+    }
 }
 ?>

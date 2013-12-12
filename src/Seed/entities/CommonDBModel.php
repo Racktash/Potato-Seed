@@ -1,0 +1,89 @@
+<?php
+abstract class CommonDBModel extends DBModel
+{
+    protected $table_name;
+    protected $val_errors;
+    protected $required_fields;
+
+    public function setTableName($table_name)
+    {
+        $this->table_name = $table_name;
+    }
+
+    public function insert($data)
+    {
+        if($this->isValid($data))
+        {
+            $sql = $this->generateInsertStatement();
+            $stmt = $this->handle->prepare($sql);
+            $data = $this->generateParamAssocArray($data);
+
+            $this->executeParam($stmt, $data);
+        }
+        else throw new Exception("Invalid data provided.");
+    }
+
+    abstract protected function isValid($data);
+
+    protected function generateInsertStatement()
+    {
+        $statement = "INSERT INTO " . $this->table_name . "(";
+        $required_fields_str = implode(", ", $this->required_fields);
+
+        $statement .= $required_fields_str . ") VALUES (";
+        $param_fields = $this->generateParamArray($this->required_fields);
+
+        $fields_str = implode(", ", $param_fields);
+        $statement .= $fields_str . ")";
+        
+        return $statement;
+    }
+
+    protected function generateParamArray($array)
+    {
+        foreach($array as $field)
+        {
+            $param_field[] = ":".$field;
+        }
+
+        return $param_field;
+    }
+
+    protected function generateParamAssocArray($array)
+    {
+        foreach($array as $field => $value)
+        {
+            $param_field[":".$field] = $value;
+        }
+
+        return $param_field;
+    }
+    
+    public function find($field, $value)
+    {
+        $stmt = $this->handle->prepare("SELECT * FROM ".$this->table_name." WHERE ".$field." = ?");
+        $stmt->bindParam(1, $value);
+        $this->execute($stmt);
+
+        $result = $stmt->fetch(PDO::FETCH_OBJ);
+
+        if($result == null)
+            throw new Exception("No record could be found."); 
+
+        return $result;
+         
+    }
+
+    public function delete($field, $value)
+    {
+        $stmt = $this->handle->prepare("DELETE FROM ".$this->table_name." WHERE ".$field." = ?");
+        $stmt->bindParam(1, $value);
+        $this->execute($stmt);
+    }
+
+    public function getValidationErrors()
+    {
+        return $this->val_errors;
+    }
+}
+?>
