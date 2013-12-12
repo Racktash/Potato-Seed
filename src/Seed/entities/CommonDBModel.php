@@ -81,6 +81,31 @@ abstract class CommonDBModel extends DBModel
         $this->execute($stmt);
     }
 
+    public function save($object, $id_field="id")
+    {
+        $obj_array = (array) $object;
+        if($this->isValid($obj_array))
+        {
+            $sql = $this->generateUpdateStatement($id_field, $obj_array);
+            $stmt = $this->handle->prepare($sql);
+            $this->executeParam($stmt, $obj_array);
+        }
+        else throw new Exception("Invalid data provided!");
+    }
+
+    protected function generateUpdateStatement($field, $params)
+    {
+        $sql_statement .= "UPDATE ".$this->table_name. " SET ";
+        foreach($params as $key => $value)
+        {
+            $update_statements[] .= $key . " = :".$key;
+        }
+
+        $sql_statement .= implode(", ", $update_statements) . " WHERE " .$field . " = :".$field;
+
+        return $sql_statement;
+    }
+
     public function getValidationErrors()
     {
         return $this->val_errors;

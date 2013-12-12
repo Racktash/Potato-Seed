@@ -13,7 +13,7 @@ class User_Model extends CommonDBModel
     {
         $validator = new Validator($data);
         $validator->newRule("username", "Username", "required");
-        $validator->newRule("lower", "Username", "required|max_len|10");
+        $validator->newRule("lower", "Username", "required|max_len|64");
         $validator->newRule("email", "Username", "required|min_len|2");
 
         if($validator->allValid()) return true;
