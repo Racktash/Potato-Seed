@@ -17,13 +17,12 @@ abstract class CommonDBModel extends DBModel
             $sql = $this->generateInsertStatement();
             $stmt = $this->handle->prepare($sql);
             $data = $this->generateParamAssocArray($data);
-
             $this->executeParam($stmt, $data);
         }
         else throw new Exception("Invalid data provided.");
     }
 
-    abstract protected function isValid($data);
+    abstract protected function isValid($data, $update=false);
 
     protected function generateInsertStatement()
     {
@@ -59,6 +58,17 @@ abstract class CommonDBModel extends DBModel
         return $param_field;
     }
     
+    public function exists($field, $value)
+    {
+        $stmt = $this->handle->prepare("SELECT * FROM ".$this->table_name." WHERE ".$field." = ?");
+        $stmt->bindParam(1, $value);
+        $this->execute($stmt);
+
+        $result = $stmt->fetch(PDO::FETCH_OBJ);
+
+        return ($result != null);
+    }
+
     public function find($field, $value)
     {
         $stmt = $this->handle->prepare("SELECT * FROM ".$this->table_name." WHERE ".$field." = ?");
@@ -84,7 +94,7 @@ abstract class CommonDBModel extends DBModel
     public function save($object, $id_field="id")
     {
         $obj_array = (array) $object;
-        if($this->isValid($obj_array))
+        if($this->isValid($obj_array, true))
         {
             $sql = $this->generateUpdateStatement($id_field, $obj_array);
             $stmt = $this->handle->prepare($sql);

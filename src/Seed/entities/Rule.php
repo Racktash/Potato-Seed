@@ -41,13 +41,13 @@ class Rule
             return false;
         };
 
-        if($this->conditions["required"] === true and ($this->string == "" or $this->string == null))
+        if($this->conditions["required"] === true and (trim($this->string) == "" or $this->string == null))
             return $fail($this->field_human_name . " must be filled in.");
 
-        if($this->conditions["min_len"] !== 0 and strlen($this->string) < $this->conditions["min_len"])
+        if($this->conditions["min_len"] !== 0 and strlen(trim($this->string)) < $this->conditions["min_len"])
             return $fail($this->field_human_name . " must be at least ".$this->conditions["min_len"]." characters long.");
 
-        if($this->conditions["max_len"] !== 0 and strlen($this->string) > $this->conditions["max_len"])
+        if($this->conditions["max_len"] !== 0 and strlen(trim($this->string)) > $this->conditions["max_len"])
             return $fail($this->field_human_name . " must not exceed ".$this->conditions["max_len"]." characters long.");
 
         return true;
