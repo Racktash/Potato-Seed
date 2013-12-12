@@ -24,7 +24,10 @@ abstract class CommonDBModel extends DBModel
         else throw new Exception("Invalid data provided.");
     }
 
-    abstract protected function isValid($data, $id_field=NULL);
+    protected function isValid($data, $id_field=NULL)
+    {
+        if($id_field == NULL) $data[$id_field] = NULL;
+    }
 
     protected function generateInsertStatement()
     {
@@ -60,33 +63,26 @@ abstract class CommonDBModel extends DBModel
         return $param_field;
     }
     
-    public function exists($field, $value, $id_field=NULL)
+    public function exists($field, $value, $id_field=NULL, $id_value=NULL)
     {
-        /*
-        $stmt = $this->handle->prepare("SELECT * FROM ".$this->table_name." WHERE ".$field." = ?");
-        $stmt->bindParam(1, $value);
+        if($id_field == NULL or $id_value == NULL)
+        {
+            $stmt = $this->handle->prepare("SELECT * FROM ".$this->table_name." WHERE ".$field." = ?");
+            $stmt->bindParam(1, $value);
+        }
+        else
+        {
+            $stmt = $this->handle->prepare("SELECT * FROM ".$this->table_name." WHERE ".$field." = ? AND ".$id_field." != ?");
+            $stmt->bindParam(1, $value);
+            $stmt->bindParam(2, $id_value);
+        }
+
         $this->execute($stmt);
 
         $result = $stmt->fetch();
+
+        return ($result != null);
     
-        $accept_one = false;
-
-        if($except != NULL)
-        {
-            $except_array = (array) $except;
-
-            if($except_array[$field] == $value)
-                $accept_one = true;
-        }
-
-        if($accept_one)
-            return (sizeof($result) == 1 and $result != null);
-        else
-            return ($result != null);
-        */
-
-            //TODO -- fix this!
-        return true;
     }
 
     public function find($field, $value)
@@ -174,7 +170,7 @@ abstract class CommonDBModel extends DBModel
     public function save($object, $id_field="id")
     {
         $obj_array = (array) $object;
-        if($this->isValid($obj_array, true))
+        if($this->isValid($obj_array, $id_field))
         {
             $sql = $this->generateUpdateStatement($id_field, $obj_array);
             $stmt = $this->handle->prepare($sql);

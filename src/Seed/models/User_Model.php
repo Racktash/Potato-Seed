@@ -11,25 +11,27 @@ class User_Model extends CommonDBModel
 
     public function isValid($data, $id_field=NULL)
     {
+        parent::isValid($data, $id_field);
+
         $validator = new Validator($data);
         $validator->newRule("username", "Username", "required");
         $validator->newRule("lower", "Username", "required|max_len|64");
         $validator->newRule("email", "Username", "required|min_len|2");
 
 
-        if($this->exists("lower", $data["lower"], $id_field))
+        if($this->exists("lower", $data["lower"], $id_field, $data[$id_field]))
         {
             $this->val_errors[] = "Username (lower) must be unique!";
             return false;
         }
 
-        if($this->exists("username", $data["username"], $id_field))
+        if($this->exists("username", $data["username"], $id_field, $data[$id_field]))
         {
             $this->val_errors[] = "Username must be unique!";
             return false;
         }
 
-        if($this->exists("email", $data["email"], $id_field))
+        if($this->exists("email", $data["email"], $id_field, $data[$id_field]))
         {
             $this->val_errors[] = "Email must be unique!";
             return false;
