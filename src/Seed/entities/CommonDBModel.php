@@ -4,6 +4,8 @@ abstract class CommonDBModel extends DBModel
     protected $table_name;
     protected $val_errors;
     protected $required_fields;
+    protected $limit1 = 0, $limit2 = 5;
+    protected $order_statement = "";
 
     public function setTableName($table_name)
     {
@@ -22,7 +24,7 @@ abstract class CommonDBModel extends DBModel
         else throw new Exception("Invalid data provided.");
     }
 
-    abstract protected function isValid($data, $update=false);
+    abstract protected function isValid($data, $id_field=NULL);
 
     protected function generateInsertStatement()
     {
@@ -58,20 +60,43 @@ abstract class CommonDBModel extends DBModel
         return $param_field;
     }
     
-    public function exists($field, $value)
+    public function exists($field, $value, $id_field=NULL)
     {
+        /*
         $stmt = $this->handle->prepare("SELECT * FROM ".$this->table_name." WHERE ".$field." = ?");
         $stmt->bindParam(1, $value);
         $this->execute($stmt);
 
-        $result = $stmt->fetch(PDO::FETCH_OBJ);
+        $result = $stmt->fetch();
+    
+        $accept_one = false;
 
-        return ($result != null);
+        if($except != NULL)
+        {
+            $except_array = (array) $except;
+
+            if($except_array[$field] == $value)
+                $accept_one = true;
+        }
+
+        if($accept_one)
+            return (sizeof($result) == 1 and $result != null);
+        else
+            return ($result != null);
+        */
+
+            //TODO -- fix this!
+        return true;
     }
 
     public function find($field, $value)
     {
-        $stmt = $this->handle->prepare("SELECT * FROM ".$this->table_name." WHERE ".$field." = ?");
+        return $this->findFirst($field, $value);
+    }
+
+    public function findFirst($field, $value)
+    {
+        $stmt = $this->handle->prepare("SELECT * FROM ".$this->table_name." WHERE ".$field." = ? ORDER BY ".$field." ASC LIMIT 0, 1");
         $stmt->bindParam(1, $value);
         $this->execute($stmt);
 
@@ -82,6 +107,61 @@ abstract class CommonDBModel extends DBModel
 
         return $result;
          
+    }
+
+    public function findLast($field, $value)
+    {
+        $stmt = $this->handle->prepare("SELECT * FROM ".$this->table_name." WHERE ".$field." = ? ORDER BY ".$field." DESC LIMIT 0, 1");
+        $stmt->bindParam(1, $value);
+        $this->execute($stmt);
+
+        $result = $stmt->fetch(PDO::FETCH_OBJ);
+
+        if($result == null)
+            throw new Exception("No record could be found."); 
+
+        return $result;
+         
+    }
+
+    public function order($order_by, $limit1, $limit2)
+    {
+        $this->order_statement = $order_by;
+        $this->limit1 = $limit1;
+        $this->limit2 = $limit2;
+    }
+
+    public function all()
+    {
+        $sql = "SELECT * FROM ".$this->table_name." ".$this->order_statement." LIMIT ?, ?";
+        $stmt = $this->handle->prepare($sql);
+        $stmt->bindParam(1, $this->limit1, PDO::PARAM_INT);
+        $stmt->bindParam(2, $this->limit2, PDO::PARAM_INT);
+        $this->execute($stmt);
+
+        $results = $stmt->fetchAll(PDO::FETCH_OBJ);
+
+        if($results == null)
+            throw new Exception("No records could be found."); 
+
+        return $results;
+    }
+
+    public function findAll($field, $value)
+    {
+        $sql = "SELECT * FROM ".$this->table_name." WHERE ".$field." = ? ".$this->order_statement." LIMIT ?, ?";
+        $stmt = $this->handle->prepare($sql);
+        $stmt->bindParam(1, $value);
+        $stmt->bindParam(2, $this->limit1, PDO::PARAM_INT);
+        $stmt->bindParam(3, $this->limit2, PDO::PARAM_INT);
+        $this->execute($stmt);
+
+        $results = $stmt->fetchAll(PDO::FETCH_OBJ);
+
+        if($results == null)
+            throw new Exception("No records could be found."); 
+
+        return $results;
     }
 
     public function delete($field, $value)
