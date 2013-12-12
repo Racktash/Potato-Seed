@@ -14,9 +14,10 @@ class User_Model extends CommonDBModel
         parent::isValid($data, $id_field);
 
         $validator = new Validator($data);
-        $validator->newRule("username", "Username", "required");
-        $validator->newRule("lower", "Username", "required|max_len|64");
-        $validator->newRule("email", "Username", "required|min_len|2");
+        $validator->newRule("username", "Username", "required|min_len|3|max_len|64");
+        $validator->newRule("lower", "Username", "required|min_len|3|max_len|64");
+        $validator->newRule("email", "Username", "required|min_len|3|max_len|64");
+        $validator->newRule("password", "Password", "required|min_len|4");
 
 
         if($this->exists("lower", $data["lower"], $id_field, $data[$id_field]))

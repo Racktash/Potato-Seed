@@ -2,7 +2,7 @@
 abstract class CommonDBModel extends DBModel
 {
     protected $table_name;
-    protected $val_errors;
+    protected $val_errors = array();
     protected $required_fields;
     protected $limit1 = 0, $limit2 = 5;
     protected $order_statement = "";
@@ -102,7 +102,6 @@ abstract class CommonDBModel extends DBModel
             throw new Exception("No record could be found."); 
 
         return $result;
-         
     }
 
     public function findLast($field, $value)
@@ -117,7 +116,6 @@ abstract class CommonDBModel extends DBModel
             throw new Exception("No record could be found."); 
 
         return $result;
-         
     }
 
     public function order($order_by, $limit1, $limit2)
