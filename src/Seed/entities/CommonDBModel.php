@@ -18,7 +18,7 @@ abstract class CommonDBModel extends DBModel
         {
             $sql = $this->generateInsertStatement();
             $stmt = $this->handle->prepare($sql);
-            $data = $this->generateParamAssocArray($data);
+            $data = db\generateParamAssocArray($data);
             $this->executeParam($stmt, $data);
         }
         else throw new Exception("Invalid data provided.");
@@ -35,7 +35,7 @@ abstract class CommonDBModel extends DBModel
         $required_fields_str = implode(", ", $this->required_fields);
 
         $statement .= $required_fields_str . ") VALUES (";
-        $param_fields = $this->generateParamArray($this->required_fields);
+        $param_fields = db\generateParamArray($this->required_fields);
 
         $fields_str = implode(", ", $param_fields);
         $statement .= $fields_str . ")";
@@ -43,26 +43,6 @@ abstract class CommonDBModel extends DBModel
         return $statement;
     }
 
-    protected function generateParamArray($array)
-    {
-        foreach($array as $field)
-        {
-            $param_field[] = ":".$field;
-        }
-
-        return $param_field;
-    }
-
-    protected function generateParamAssocArray($array)
-    {
-        foreach($array as $field => $value)
-        {
-            $param_field[":".$field] = $value;
-        }
-
-        return $param_field;
-    }
-    
     public function exists($field, $value, $id_field=NULL, $id_value=NULL)
     {
         if($id_field == NULL or $id_value == NULL)
@@ -170,24 +150,11 @@ abstract class CommonDBModel extends DBModel
         $obj_array = (array) $object;
         if($this->isValid($obj_array, $id_field))
         {
-            $sql = $this->generateUpdateStatement($id_field, $obj_array);
+            $sql = db\generateUpdateStatement($this->table_name, $id_field, $obj_array);
             $stmt = $this->handle->prepare($sql);
             $this->executeParam($stmt, $obj_array);
         }
         else throw new Exception("Invalid data provided!");
-    }
-
-    protected function generateUpdateStatement($field, $params)
-    {
-        $sql_statement .= "UPDATE ".$this->table_name. " SET ";
-        foreach($params as $key => $value)
-        {
-            $update_statements[] .= $key . " = :".$key;
-        }
-
-        $sql_statement .= implode(", ", $update_statements) . " WHERE " .$field . " = :".$field;
-
-        return $sql_statement;
     }
 
     public function getValidationErrors()
