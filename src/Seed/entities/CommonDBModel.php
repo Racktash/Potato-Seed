@@ -3,7 +3,6 @@ abstract class CommonDBModel extends DBModel
 {
     protected $table_name;
     protected $val_errors = array();
-    protected $required_fields;
     protected $limit1 = 0, $limit2 = 5;
     protected $order_statement = "";
 
@@ -16,7 +15,8 @@ abstract class CommonDBModel extends DBModel
     {
         if($this->isValid($data))
         {
-            $sql = $this->generateInsertStatement();
+
+            $sql = db\generateInsertStatement($this->table_name, $data);
             $stmt = $this->handle->prepare($sql);
             $data = db\generateParamAssocArray($data);
             $this->executeParam($stmt, $data);
@@ -27,20 +27,6 @@ abstract class CommonDBModel extends DBModel
     protected function isValid($data, $id_field=NULL)
     {
         if($id_field == NULL) $data[$id_field] = NULL;
-    }
-
-    protected function generateInsertStatement()
-    {
-        $statement = "INSERT INTO " . $this->table_name . "(";
-        $required_fields_str = implode(", ", $this->required_fields);
-
-        $statement .= $required_fields_str . ") VALUES (";
-        $param_fields = db\generateParamArray($this->required_fields);
-
-        $fields_str = implode(", ", $param_fields);
-        $statement .= $fields_str . ")";
-        
-        return $statement;
     }
 
     public function exists($field, $value, $id_field=NULL, $id_value=NULL)
@@ -65,30 +51,13 @@ abstract class CommonDBModel extends DBModel
     
     }
 
-    public function find($field, $value)
+    public function find($params)
     {
-        return $this->findFirst($field, $value);
-    }
+        $select_statement = db\generateSelectStatement($this->table_name, $params) . " LIMIT 0, 1";
+        $assoc_params = db\generateParamAssocArray($params);
 
-    public function findFirst($field, $value)
-    {
-        $stmt = $this->handle->prepare("SELECT * FROM ".$this->table_name." WHERE ".$field." = ? ORDER BY ".$field." ASC LIMIT 0, 1");
-        $stmt->bindParam(1, $value);
-        $this->execute($stmt);
-
-        $result = $stmt->fetch(PDO::FETCH_OBJ);
-
-        if($result == null)
-            throw new Exception("No record could be found."); 
-
-        return $result;
-    }
-
-    public function findLast($field, $value)
-    {
-        $stmt = $this->handle->prepare("SELECT * FROM ".$this->table_name." WHERE ".$field." = ? ORDER BY ".$field." DESC LIMIT 0, 1");
-        $stmt->bindParam(1, $value);
-        $this->execute($stmt);
+        $stmt = $this->handle->prepare($select_statement);
+        $this->executeParam($stmt, $assoc_params);
 
         $result = $stmt->fetch(PDO::FETCH_OBJ);
 

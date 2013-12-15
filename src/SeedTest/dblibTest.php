@@ -40,4 +40,27 @@ class dblibTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($param_array[":id"], 5);
         $this->assertEquals($param_array[":lower"], "someuser");
     }
+
+    public function testGenerateSelectStatement()
+    {
+        $params["username"] = "SomeUser";
+        $params["id"] = 5;
+
+        $sql_statement = db\generateSelectStatement("User", $params);
+        $expected_sql_statement = "SELECT * FROM User WHERE username = :username AND id = :id";
+
+        $this->assertEquals($sql_statement, $expected_sql_statement);
+    }
+
+    public function testGenerateInsertStatement()
+    {
+        $params["username"] = "SomeUser";
+        $params["password"] = "Test";
+
+        $sql_statement = db\generateInsertStatement("User", $params);
+        $expected_sql_statement = "INSERT INTO User (username, password) VALUES(:username, :password)";
+
+        $this->assertEquals($sql_statement, $expected_sql_statement);
+
+    }
 }
