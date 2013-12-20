@@ -15,12 +15,12 @@ abstract class DBModel
 
     protected function execute($stmt)
     {
-        if(!$stmt->execute()) throw new Exception("Error executing SQL!");
+        if(!$stmt->execute()) throw new Exception("Error executing SQL! (".$stmt->error.")");
     }
 
     protected function executeParam($stmt, $param)
     {
-        if(!$stmt->execute($param)) throw new Exception("Error executing SQL!");
+        if(!$stmt->execute($param)) throw new Exception("Error executing SQL! (".$stmt->error.")");
     }
 }
 ?>

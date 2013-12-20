@@ -69,7 +69,7 @@ abstract class CommonDBModel extends DBModel
 
     public function order($order_by, $limit1, $limit2)
     {
-        $this->order_statement = $order_by;
+        $this->order_statement = " ".$order_by." ";
         $this->limit1 = $limit1;
         $this->limit2 = $limit2;
     }
@@ -90,14 +90,21 @@ abstract class CommonDBModel extends DBModel
         return $results;
     }
 
-    public function findAll($field, $value)
+    public function findAll($params)
     {
-        $sql = "SELECT * FROM ".$this->table_name." WHERE ".$field." = ? ".$this->order_statement." LIMIT ?, ?";
-        $stmt = $this->handle->prepare($sql);
-        $stmt->bindParam(1, $value);
-        $stmt->bindParam(2, $this->limit1, PDO::PARAM_INT);
-        $stmt->bindParam(3, $this->limit2, PDO::PARAM_INT);
-        $this->execute($stmt);
+        $this->handle->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+
+        $select_statement = db\generateSelectStatement($this->table_name, $params) . $this->order_statement ." LIMIT :limit1, :limit2";
+
+        $params["limit1"] = $this->limit1;
+        $params["limit2"] = $this->limit2;
+
+        $assoc_params = db\generateParamAssocArray($params);
+
+        $stmt = $this->handle->prepare($select_statement);
+        $this->executeParam($stmt, $assoc_params);
+
+        $this->handle->setAttribute(PDO::ATTR_EMULATE_PREPARES, true);
 
         $results = $stmt->fetchAll(PDO::FETCH_OBJ);
 

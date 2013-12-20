@@ -5,8 +5,6 @@ class User_Model extends CommonDBModel
     {
         parent::__construct($handle);
         $this->setTableName(REGISTRY_TBLNAME_USERS);
-
-        $this->required_fields = array("username", "lower", "email");
     }
 
     public function isValid($data, $id_field=NULL)
