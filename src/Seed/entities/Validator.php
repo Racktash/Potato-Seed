@@ -12,12 +12,15 @@ class Validator
 
     public function newRule($input_name, $field_human_name, $cond_str)
     {
+        if(!array_key_exists($input_name, $this->input_array))
+            throw new Exception("Input not supplied!");
+
         $new_rule = new Rule($this->input_array[$input_name], $field_human_name);
         $new_rule = $this->setConditions($new_rule, $cond_str);
         $this->rules[] = $new_rule;
     }
 
-    public function setConditions($rule, $cond_str)
+    private function setConditions($rule, $cond_str)
     {
         $conds = explode("|", $cond_str);
 

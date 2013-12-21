@@ -1,5 +1,5 @@
 <?php
-require 'Seed/entities/Rule.php';
+require_once 'Seed/entities/Rule.php';
 
 class RuleTest extends PHPUnit_Framework_TestCase
 {
