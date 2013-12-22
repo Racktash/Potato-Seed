@@ -3,14 +3,14 @@ require_once 'Seed/entities/Rule.php';
 
 class RuleTest extends PHPUnit_Framework_TestCase
 {
-    public function testRequiredValid()
+    public function test_setRequired_ValidString_ReturnsTrue()
     {
         $rule = new Rule("The sleeping dog...", "Example Field");
         $rule->setRequired();
         $this->assertTrue($rule->isValid());
     }
 
-    public function testRequiredInvalid()
+    public function test_setRequired_InvalidString_ReturnsFalseAndError()
     {
         $rule = new Rule("", "Example Field");
         $rule->setRequired();
@@ -19,16 +19,19 @@ class RuleTest extends PHPUnit_Framework_TestCase
         $this->assertContains("Example Field must be filled in", $rule->getError());
     }
 
-    public function testNoRulesAnythingValid()
+    public function test_noRules_EmptyString_ReturnsTrue()
     {
-        $rule = new Rule("The sleeping dog...", "Example Field");
-        $this->assertTrue($rule->isValid());
-
         $rule = new Rule("", "Example Field");
         $this->assertTrue($rule->isValid());
     }
 
-    public function testMinValid()
+    public function test_noRules_ValidString_ReturnsTrue()
+    {
+        $rule = new Rule("Some string", "Example Field");
+        $this->assertTrue($rule->isValid());
+    }
+
+    public function test_setMinLen_ValidString_ReturnsTrue()
     {
         $rule = new Rule("Dog", "Example Field");
         $rule->setMinLen(3);
@@ -36,7 +39,7 @@ class RuleTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($rule->isValid());
     }
 
-    public function testMinInvalid()
+    public function test_setMinLen_InvalidString_ReturnsFalseAndError()
     {
         $rule = new Rule("Dog", "Example Field");
         $rule->setMinLen(4);
@@ -45,7 +48,7 @@ class RuleTest extends PHPUnit_Framework_TestCase
         $this->assertContains("Example Field must be at least", $rule->getError());
     }
 
-    public function testMaxValid()
+    public function test_setMaxLen_ValidString_ReturnsTrue()
     {
         $rule = new Rule("Dog", "Example Field");
         $rule->setMaxLen(3);
@@ -53,7 +56,7 @@ class RuleTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($rule->isValid());
     }
 
-    public function testMaxInvalid()
+    public function test_setMaxLen_InvalidString_ReturnsFalseAndError()
     {
         $rule = new Rule("Dog", "Example Field");
         $rule->setMaxLen(2);

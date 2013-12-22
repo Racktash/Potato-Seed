@@ -3,22 +3,18 @@ require 'Seed/lib/db.php';
 
 class dblibTest extends PHPUnit_Framework_TestCase
 {
-    public function testGenerateUpdateStatement()
+    public function test_generateUpdateStatement_ValidParams_ReturnsValidUpdateStatement()
     {
         $params["id"] = 5;
         $params["username"] = "SomeUser";
         $params["lower"] = "someuser";
-
-        $update_statement = db\generateUpdateStatement("User", "id", $params);
-        $expected_update_statement = "UPDATE User SET id = :id, username = :username, lower = :lower WHERE id = :id";
-        $this->assertEquals($update_statement, $expected_update_statement);
 
         $update_statement = db\generateUpdateStatement("User", "lower", $params);
         $expected_update_statement = "UPDATE User SET id = :id, username = :username, lower = :lower WHERE lower = :lower";
         $this->assertEquals($update_statement, $expected_update_statement);
     }
 
-    public function testGenerateParamArray()
+    public function test_generateParamArray_ValidParams_ReturnsValidParamArray()
     {
         $array = array("id", "username", "lower");
         $param_array = db\generateParamArray($array);
@@ -28,7 +24,7 @@ class dblibTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($param_array[2], ":lower");
     }
 
-    public function testGenreateParamAssocArray()
+    public function test_generateParamAssocArray_ValidParams_ReturnsValidAssocParamArray()
     {
         $array["username"] = "SomeUser";
         $array["lower"] = "someuser";
@@ -41,7 +37,7 @@ class dblibTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($param_array[":lower"], "someuser");
     }
 
-    public function testGenerateSelectStatement()
+    public function test_generateSelectStatement_ValidParams_ReturnsValidSelectStatement()
     {
         $params["username"] = "SomeUser";
         $params["id"] = 5;
@@ -52,7 +48,7 @@ class dblibTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($sql_statement, $expected_sql_statement);
     }
 
-    public function testGenerateInsertStatement()
+    public function test_generateInsertStatement_ValidParams_ReturnsValidInsertStatement()
     {
         $params["username"] = "SomeUser";
         $params["password"] = "Test";

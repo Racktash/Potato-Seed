@@ -4,7 +4,7 @@ require_once 'Seed/entities/Validator.php';
 
 class validatorTest extends PHPUnit_Framework_TestCase
 {
-    public function testRequiredNullStringReject()
+    public function test_newRuleRequired_NullInput_ReturnsFalseAndError()
     {
         $test_input["field"] = null;
         $validator = new Validator($test_input);
@@ -18,7 +18,7 @@ class validatorTest extends PHPUnit_Framework_TestCase
         $this->assertContains("must be filled in", $errors[0]);
     }
 
-    public function testRequiredEmptyStringReject()
+    public function test_newRuleRequired_EmptyStringInput_ReturnsFalseAndError()
     {
         $test_input["field"] = "";
         $validator = new Validator($test_input);
@@ -32,7 +32,7 @@ class validatorTest extends PHPUnit_Framework_TestCase
         $this->assertContains("must be filled in", $errors[0]);
     }
 
-    public function testRequiredNoValueReject()
+    public function test_newRuleRequired_NoRelevantInput_ReturnsException()
     {
         $test_input["some_other_field"] = "";
         $validator = new Validator($test_input);
@@ -48,7 +48,7 @@ class validatorTest extends PHPUnit_Framework_TestCase
         }
     }
 
-    public function testRequiredNotEmptyStringAccept()
+    public function test_newRuleRequired_ValidInput_ReturnsTrue()
     {
         $test_input["field"] = "Perfectly valid value";
         $validator = new Validator($test_input);
@@ -58,7 +58,7 @@ class validatorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($validator->allValid());
     }
 
-    public function testMinLenBelowReject()
+    public function test_newRuleMinLen_InputBelowMin_ReturnsFalseAndError()
     {
         $test_input["field"] = "Small";
         $validator = new Validator($test_input);
@@ -73,7 +73,7 @@ class validatorTest extends PHPUnit_Framework_TestCase
         $this->assertContains("6", $errors[0]);
     }
 
-    public function testMinLenExactAccept()
+    public function test_newRuleMinLen_ExactlyMin_ReturnsTrue()
     {
         $test_input["field"] = "Small";
         $validator = new Validator($test_input);
@@ -83,7 +83,7 @@ class validatorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($validator->allValid());
     }
 
-    public function testMinLenAboveAccept()
+    public function test_newRuleMinLen_InputAboveMin_ReturnTrue()
     {
         $test_input["field"] = "Small";
         $validator = new Validator($test_input);
@@ -93,7 +93,7 @@ class validatorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($validator->allValid());
     }
 
-    public function testMaxLenAboveReject()
+    public function test_newRuleMaxLen_InputAboveMax_ReturnsFalseAndError()
     {
         $test_input["field"] = "Small";
         $validator = new Validator($test_input);
@@ -108,7 +108,7 @@ class validatorTest extends PHPUnit_Framework_TestCase
         $this->assertContains("4", $errors[0]);
     }
 
-    public function testMaxLenExactAccept()
+    public function test_newRuleMaxLen_InputExactMax_ReturnsTrue()
     {
         $test_input["field"] = "Small";
         $validator = new Validator($test_input);
@@ -118,7 +118,7 @@ class validatorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($validator->allValid());
     }
 
-    public function testMaxLenBelowAccept()
+    public function test_newRuleMaxLen_InputBelowMax_ReturnsTrue()
     {
         $test_input["field"] = "Small";
         $validator = new Validator($test_input);
@@ -128,7 +128,7 @@ class validatorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($validator->allValid());
     }
 
-    public function testMultipleInvalidMaxLenReject()
+    public function test_MultipleRules_ViolateMaxLen_ReturnsFalseAndError()
     {
         $test_input["field"] = "Small";
         $validator = new Validator($test_input);
@@ -141,7 +141,7 @@ class validatorTest extends PHPUnit_Framework_TestCase
         $this->assertContains("must not exceed", $errors[0]);
     }
 
-    public function testMultipleInvalidMinLenReject()
+    public function test_MultipleRules_ViolateMinLen_ReturnsFalseAndError()
     {
         $test_input["field"] = "W";
         $validator = new Validator($test_input);
@@ -154,7 +154,7 @@ class validatorTest extends PHPUnit_Framework_TestCase
         $this->assertContains("must be at least", $errors[0]);
     }
 
-    public function testMultipleInvalidRequiredReject()
+    public function test_MultipleRules_ViolateRequired_ReturnsFalseAndError()
     {
         $test_input["field"] = "";
         $validator = new Validator($test_input);
