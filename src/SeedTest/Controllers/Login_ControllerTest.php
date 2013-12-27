@@ -5,7 +5,7 @@ require_once 'Seed/entities/Controller.php';
 require_once 'Seed/controllers/Login_Controller.php';
 require_once 'SeedTestHelpers/TestableLogin_Controller.php';
 
-class TestsLogin_Controller extends PHPUnit_Framework_TestCase
+class Login_ControllerTest extends PHPUnit_Framework_TestCase
 {
     private function newLoginController()
     {
