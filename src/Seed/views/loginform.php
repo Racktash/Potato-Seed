@@ -24,6 +24,6 @@ foreach($val_errors as $error)
     
     <p><strong>Password</strong><input type='password' name='password'></p>
     
-    <p><input type='submit' value='Log In'></p>
+    <p><input name='submit' type='submit' value='Log In'></p>
     
 </form>
