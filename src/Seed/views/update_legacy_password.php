@@ -2,9 +2,9 @@
 if (BOOT != "yes")
     exit();
 
-$val_errors = $controller_object->getValidationErrors();
-$legacy_password = $controller_object->getLegacyPassword();
-$username = $controller_object->getUsername();
+$val_errors = $controller->getValidationErrors();
+$legacy_password = $controller->getLegacyPassword();
+$username = $controller->getUsername();
 
 foreach($val_errors as $error)
 {

@@ -10,7 +10,6 @@ class Seed_Loader
 		self::autoLoadClasses();
 		self::loadLibs();
 		self::loadVersionFile();
-		self::loadLoggedIn();
 		self::markSuccessfulBoot();
 	}
 
@@ -59,11 +58,6 @@ class Seed_Loader
 	private static function loadVersionFile()
 	{
 		require("version.php");
-	}
-
-	private static function loadLoggedIn()
-	{
-		require(REGISTRY_ENGINE_PATH . "loggedin.php");
 	}
 
 	private static function markSuccessfulBoot()

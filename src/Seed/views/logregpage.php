@@ -5,11 +5,11 @@ if(BOOT != "yes")
 <!DOCTYPE HTML>
 <html>
     <head>
-        <title><?php echo display\html($controller_object->getPageTitle()); ?></title>
+        <title><?php echo display\html($controller->getPageTitle()); ?></title>
     </head>
     <body>
         <?php
-            require(REGISTRY_ENGINE_PATH."views/".$controller_object->getInnerView());
+            require(REGISTRY_ENGINE_PATH."views/".$controller->getInnerView());
         ?>
     </body>
 </html>
