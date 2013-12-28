@@ -63,16 +63,21 @@ class Login_Controller extends Controller
     protected function usernamePasswordComboValid()
     {
         $user_mdl = new User_Model(db\newPDO());
-        $username = strtolower(display\alphanum($this->getInputParam("username")));
-        $password = $this->getInputParam("username");
-        $password = PNet::OneWayEncryption($password, $username);
+        $username = $this->getInputParam("username");
+        $password = $this->getInputParam("password");
+        $formatted_input = $user_mdl->formatUsernamePassword($username, $password);
 
         try
         {
-            $user = $user_mdl->find(array("lower"=>$username));
+            $user = $user_mdl->find(array("lower"=>$formatted_input["username"]));
 
-            if ($user->password != $password)
+            if ($user->password != $formatted_input["password"])
+            {
                 return false;
+            }
+
+            return true;
+
         }
         catch(Exception $e)
         {

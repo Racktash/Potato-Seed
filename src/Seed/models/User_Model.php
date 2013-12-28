@@ -43,5 +43,12 @@ class User_Model extends CommonDBModel
             return false;
         }
     }
+
+    public function formatUsernamePassword($username, $password)
+    {
+        $return_array["username"] = strtolower(display\alphanum($username));
+        $return_array["password"] = PNet::OneWayEncryption($password, $return_array["username"]);
+        return $return_array;
+    }
 }
 ?>
