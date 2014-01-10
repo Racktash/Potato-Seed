@@ -65,6 +65,7 @@ class Login_Controller extends Controller
         $user_mdl = new User_Model(db\newPDO());
         $username = $this->getInputParam("username");
         $password = $this->getInputParam("password");
+
         $formatted_input = $user_mdl->formatUsernamePassword($username, $password);
 
         try
@@ -72,9 +73,7 @@ class Login_Controller extends Controller
             $user = $user_mdl->find(array("lower"=>$formatted_input["username"]));
 
             if ($user->password != $formatted_input["password"])
-            {
                 return false;
-            }
 
             return true;
 
@@ -87,7 +86,15 @@ class Login_Controller extends Controller
 
     protected function login()
     {
-        //logic to login, create cookies etc.
+        $user_mdl = new User_Model(db\newPDO());
+        $username = $this->getInputParam("username");
+        $formatted_input = $user_mdl->formatUsernamePassword($username, "");
+
+        $user = $user_mdl->find(array("lower"=>$formatted_input["username"]));
+
+        $session_model = new Session_Model(db\newPDO());
+        $session = $session_model->newSession($user->id);
+        $session_model->createCookie($session);
     }
 
     private function loginForm()
