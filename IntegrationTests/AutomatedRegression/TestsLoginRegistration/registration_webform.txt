@@ -12,42 +12,49 @@ Username Blank
 	Fill In Registration Fields With Valid Data
 	Input Text  username  ${EMPTY}
 	Attempt Registration
-	Page Should Contain  Username must contain alphanumeric characters!
+	Page Should Contain  Username must be filled in
 
 Username Blank Except For Invalid Characters
 	Go To Registration Page
 	Fill In Registration Fields With Valid Data
 	Input Text  username  $@@@@@
 	Attempt Registration
-	Page Should Contain  Username must contain alphanumeric characters!
+	Page Should Contain  Username must be filled in
 
 Username Too Long
 	Go To Registration Page
 	Fill In Registration Fields With Valid Data
 	Input Text  username  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa 
 	Attempt Registration
-	Page Should Contain  Username cannot exceed 64 characters in length!
+	Page Should Contain  Username cannot exceed 64 characters in length
+
+User Already In Use, Lower Case
+	Go To Registration Page
+	Fill In Registration Fields With Valid Data
+	Input Text  username  testaccount87 
+	Attempt Registration
+	Page Should Contain  Username is already registered
 
 User Already In Use
 	Go To Registration Page
 	Fill In Registration Fields With Valid Data
 	Input Text  username  TestAccount87 
 	Attempt Registration
-	Page Should Contain  Username already in use!
+	Page Should Contain  Username is already registered
 
 User Already In use, but Appended With Spaces
 	Go To Registration Page
 	Fill In Registration Fields With Valid Data
 	Input Text  username  TestAccount87 \ \ 
 	Attempt Registration
-	Page Should Contain  Username already in use!
+	Page Should Contain  Username is already registered
 
 User Already In use, but Appended With NonAlphaNum Characters
 	Go To Registration Page
 	Fill In Registration Fields With Valid Data
 	Input Text  username  TestAccount87$
 	Attempt Registration
-	Page Should Contain  Username already in use!
+	Page Should Contain  Username is already registered
 
 
 
@@ -55,23 +62,23 @@ User Already In use, but Appended With NonAlphaNum Characters
 Password 1 Blank
 	Go To Registration Page
 	Fill In Registration Fields With Valid Data
-	Input Text  pass1  ${EMPTY}
+	Input Text  password1  ${EMPTY}
 	Attempt Registration
-	Page Should Contain  The two passwords supplied did not match!
+	Page Should Contain  Password must be filled in
 
 Password 2 Blank
 	Go To Registration Page
 	Fill In Registration Fields With Valid Data
-	Input Text  pass2  ${EMPTY}
+	Input Text  password2  ${EMPTY}
 	Attempt Registration
-	Page Should Contain  The two passwords supplied did not match!
+	Page Should Contain  Password must be filled in
 
 Non-matching passwords
 	Go To Registration Page
 	Fill In Registration Fields With Valid Data
-	Input Text  pass2  someOtherPassword 
+	Input Text  password2  someOtherPassword 
 	Attempt Registration
-	Page Should Contain  The two passwords supplied did not match!
+	Page Should Contain  Passwords must match
 
 
 
@@ -81,42 +88,49 @@ Email Blank
 	Fill In Registration Fields With Valid Data
 	Input Text  email  ${EMPTY}
 	Attempt Registration
-	Page Should Contain  Email field cannot be left blank and must contain alphanumeric characters!
+	Page Should Contain  Email address must be filled in
 
 Email Invalid Format
 	Go To Registration Page
 	Fill In Registration Fields With Valid Data
 	Input Text  email  notanemail
 	Attempt Registration
-	Page Should Contain  Email supplied was not formatted correctly.
+	Page Should Contain  Email supplied was not formatted correctly
 	
 Email Invalid Format 2
 	Go To Registration Page
 	Fill In Registration Fields With Valid Data
 	Input Text  email  notemail@email
 	Attempt Registration
-	Page Should Contain  Email supplied was not formatted correctly.
+	Page Should Contain  Email supplied was not formatted correctly
 
 Email Too Long
 	Go To Registration Page
 	Fill In Registration Fields With Valid Data
 	Input Text  email  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@aaaaaaaaaaaaaaaaaaa.com
 	Attempt Registration
-	Page Should Contain  Email cannot exceed 64 characters in length!
+	Page Should Contain  Email address cannot exceed 64 characters in length
+
+Email Already In Use, Different Case
+	Go To Registration Page
+	Fill In Registration Fields With Valid Data
+	Input Text  email  TESTACCOUNT87@TEST.COM
+	Attempt Registration
+	Page Should Contain  Email is already registered
 
 Email Already In Use
 	Go To Registration Page
 	Fill In Registration Fields With Valid Data
 	Input Text  email  testaccount87@test.com
 	Attempt Registration
-	Page Should Contain  Email is already being used by a registered account!
+	Page Should Contain  Email is already registered
 
 Email Already In Use -- Only Difference is illegal chars
 	Go To Registration Page
 	Fill In Registration Fields With Valid Data
 	Input Text  email  testaccount87$@test.com
 	Attempt Registration
-	Page Should Contain  Email is already being used by a registered account!
+	Page Should Contain  Email is already registered
 
 
 
@@ -126,14 +140,14 @@ Incorrect Spam Question
 	Fill In Registration Fields With Valid Data
 	Input Text  spam  new york  
 	Attempt Registration
-	Page Should Contain  Spam question was not correctly answered.
+	Page Should Contain  Spam question not answered correctly.
 
 Spam Question Blank
 	Go To Registration Page
 	Fill In Registration Fields With Valid Data
 	Input Text  spam  ${EMPTY}
 	Attempt Registration
-	Page Should Contain  Spam question was not correctly answered.
+	Page Should Contain  Spam check must be filled in.
 
 
 *** Keywords ***
@@ -145,8 +159,8 @@ Fill In Registration Fields
 	[Arguments]  	${username}  ${email_address}  ${password}  ${password2}  ${spam}
 	Input Text  username  ${username}
 	Input Text  email  ${email_address}
-	Input Text  pass1  ${password}
-	Input Text  pass2  ${password2}
+	Input Text  password1  ${password}
+	Input Text  password2  ${password2}
 	Input Text  spam  ${spam}
 
 Fill In Registration Fields With Valid Data

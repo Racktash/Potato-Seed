@@ -1,5 +1,0 @@
-Potato Seed welcomes community contributions to source code. In order to maximise your chance of having code accepted, please ensure any code contributed:
-
- * Follows patterns and conventions of the rest of the code
- * Does what it should do
- * Is clean and designed with maintainability and readability in mind
