@@ -10,7 +10,7 @@ Test Suite Requirements:
 ====
 
 Automated Tests
-	-> Run automated reg_form.txt tests
+	-> Run automated registration_webform.txt tests
 	=> All tests should pass
 
 >Valid Details
@@ -19,3 +19,4 @@ Automated Tests
 	=> Registration should be complete
 	-> Go to login, and attempt to login with new values
 	=> Login should be successful
+    -> Delete new user from database

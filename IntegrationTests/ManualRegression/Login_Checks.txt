@@ -10,7 +10,7 @@ Test Suite Requirements:
 ====
 
 Automated Tests
-	-> Run automated login_form.txt tests
+	-> Run automated login_webform.txt tests
 	=> All tests should pass
 
 
