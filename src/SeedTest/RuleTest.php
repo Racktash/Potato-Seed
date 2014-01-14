@@ -62,7 +62,7 @@ class RuleTest extends PHPUnit_Framework_TestCase
         $rule->setMaxLen(2);
 
         $this->assertFalse($rule->isValid());
-        $this->assertContains("Example Field must not exceed", $rule->getError());
+        $this->assertContains("Example Field cannot exceed", $rule->getError());
     }
 }
 ?>

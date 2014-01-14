@@ -104,7 +104,7 @@ class validatorTest extends PHPUnit_Framework_TestCase
         $errors = $validator->getErrors();
 
         $this->assertContains("Field", $errors[0]);
-        $this->assertContains("must not exceed", $errors[0]);
+        $this->assertContains("cannot exceed", $errors[0]);
         $this->assertContains("4", $errors[0]);
     }
 
@@ -138,7 +138,7 @@ class validatorTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($validator->allValid());
         $errors = $validator->getErrors();
 
-        $this->assertContains("must not exceed", $errors[0]);
+        $this->assertContains("cannot exceed", $errors[0]);
     }
 
     public function test_MultipleRules_ViolateMinLen_ReturnsFalseAndError()

@@ -1,6 +1,8 @@
 <?php
 class Register_Controller extends Controller
 {
+    private $user_mdl;
+
     public function execute()
     {
         if($this->registerAttemptPresent())
@@ -14,14 +16,13 @@ class Register_Controller extends Controller
                 }
                 catch(Exception $e)
                 {
+                    $this->collectRegistrationErrors();
                     $this->registrationFailure();
                 }
             }
         }
-        else
-        {
-            $this->regForm();
-        }
+
+        $this->regForm();
     }
 
     private function registerAttemptPresent()
@@ -31,12 +32,12 @@ class Register_Controller extends Controller
 
     protected function getInputArray()
     {
-        return $_GET;
+        return $_POST;
     }
 
     protected function getInputParam($key)
     {
-        return $_GET[$key];
+        return $_POST[$key];
     }
 
     private function regForm()
@@ -56,6 +57,13 @@ class Register_Controller extends Controller
         $validator->newRule("spam", "Spam check", "required");
 
         $presence_valid = $validator->allValid();
+
+        $spam_valid = true;
+        if($presence_valid and strtolower($this->getInputParam("spam")) != strtolower(REGISTRY_SPAM_ANSWER))
+        {
+            $this->addValidationError("Spam question not answered correctly.");
+            $spam_valid = false;
+        }
         
         if(count($validator->getErrors()) > 0)
         {
@@ -67,21 +75,42 @@ class Register_Controller extends Controller
 
         if(!$passwords_valid) $this->addValidationError("Passwords must match");
 
-        return ($presence_valid and $passwords_valid);
+        return ($presence_valid and $passwords_valid and $spam_valid);
     }
 
     protected function attemptRegister()
     {
-        //attempt the creation of the new user...
+        $this->user_mdl = new User_Model(db\newPDO());
+        $user["username"] = display\alphanum($this->getInputParam("username"));
+
+        $formatted_username_password = $this->user_mdl->formatUsernamePassword($user["username"], $this->getInputParam("password1"));
+        $user["lower"] = $formatted_username_password["username"];
+        $user["password"] = $formatted_username_password["password"];
+        $user["email"] = display\email($this->getInputParam("email"));
+        $user["joinDate"] = date("jth F o");
+
+        $this->user_mdl->insert($user);
     }
 
     protected function registrationSuccessful()
     {
-        //registration was a success
+        echo "success";
+    }
+
+    protected function collectRegistrationErrors()
+    {
+        if(count($this->user_mdl->getValidationErrors()) > 0)
+        {
+            foreach($this->user_mdl->getValidationErrors() as $error)
+            {
+                $this->addValidationError($error);
+            }
+        }
     }
 
     protected function registrationFailure()
     {
+        echo "failure";
         //registration was a failure
     }
 }

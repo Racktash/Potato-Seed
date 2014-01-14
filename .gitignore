@@ -1,3 +1,6 @@
 *.swp
 nbproject
 IntegrationTests/AutomatedRegression/settings.txt
+IntegrationTests/AutomatedRegression/*.png
+IntegrationTests/AutomatedRegression/*.xml
+IntegrationTests/AutomatedRegression/*.html

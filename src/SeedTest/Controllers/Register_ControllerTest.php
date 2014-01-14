@@ -218,6 +218,20 @@ class Register_ControllerTest extends PHPUnit_Framework_TestCase
         $this->assertContains("Passwords must match", $val_errors[0]);
     }
 
+    public function test_Execute_SpamIncorrect_ReturnsValidationError()
+    {
+        $test_input = $this->getValidTestData();
+        $test_input["spam"] = "new york";
+        $reg_c = $this->newRegisterController();
+
+        $reg_c->setTestInput($test_input);
+        $reg_c->execute();
+        $val_errors = $reg_c->getValidationErrors();
+
+        $this->assertTrue(count($val_errors) > 0);
+        $this->assertContains("Spam question not answered correctly", $val_errors[0]);
+    }
+
     public function test_Execute_ValidRegistrationAttempt_RegistrationSuccess()
     {
         $test_input = $this->getValidTestData();
@@ -234,12 +248,15 @@ class Register_ControllerTest extends PHPUnit_Framework_TestCase
     public function test_Execute_ExistingUser_RegistrationFailure()
     {
         $test_input = $this->getValidTestData();
+        $test_input["username"] = "existinguser";
         $reg_c = $this->newRegisterController();
 
         $reg_c->setTestInput($test_input);
         $reg_c->execute();
         $val_errors = $reg_c->getValidationErrors();
         
+        $this->assertTrue(count($val_errors) > 0);
+        $this->assertContains("Database errors", $val_errors[0]);
         $this->assertTrue($reg_c->getRegFailure());
     }
 }

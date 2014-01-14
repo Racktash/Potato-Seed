@@ -22,7 +22,7 @@ class TestableRegister_Controller extends Register_Controller
 
     protected function attemptRegister()
     {
-        if($this->getInputParam("username") == "exists")
+        if($this->getInputParam("username") == "existinguser")
         {
             throw new Exception("User already exists!");
         }
@@ -36,6 +36,11 @@ class TestableRegister_Controller extends Register_Controller
     protected function registrationFailure()
     {
         $this->reg_failure = true;
+    }
+
+    protected function collectRegistrationErrors()
+    {
+        $this->addValidationError("Database errors");
     }
 
     public function getRegSuccess()

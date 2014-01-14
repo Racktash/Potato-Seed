@@ -48,7 +48,7 @@ class Rule
             return $fail($this->field_human_name . " must be at least ".$this->conditions["min_len"]." characters long.");
 
         if($this->conditions["max_len"] !== 0 and strlen(trim($this->string)) > $this->conditions["max_len"])
-            return $fail($this->field_human_name . " must not exceed ".$this->conditions["max_len"]." characters long.");
+            return $fail($this->field_human_name . " cannot exceed ".$this->conditions["max_len"]." characters in length.");
 
         return true;
     }

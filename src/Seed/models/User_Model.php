@@ -14,25 +14,27 @@ class User_Model extends CommonDBModel
         $validator = new Validator($data);
         $validator->newRule("username", "Username", "required|min_len|3|max_len|64");
         $validator->newRule("lower", "Username", "required|min_len|3|max_len|64");
-        $validator->newRule("email", "Username", "required|min_len|3|max_len|64");
+        $validator->newRule("email", "Email address", "required|min_len|3|max_len|64");
         $validator->newRule("password", "Password", "required|min_len|4");
+        $validator->newRule("joinDate", "Join date", "required");
 
+        if(!$this->isEmailValidFormat($data["email"])) return false;
 
         if($this->exists("lower", $data["lower"], $id_field, $data[$id_field]))
         {
-            $this->val_errors[] = "Username (lower) must be unique!";
+            $this->val_errors[] = "Username is already registered!";
             return false;
         }
 
         if($this->exists("username", $data["username"], $id_field, $data[$id_field]))
         {
-            $this->val_errors[] = "Username must be unique!";
+            $this->val_errors[] = "Username is already registered!";
             return false;
         }
 
         if($this->exists("email", $data["email"], $id_field, $data[$id_field]))
         {
-            $this->val_errors[] = "Email must be unique!";
+            $this->val_errors[] = "Email is already registered!";
             return false;
         }
 
@@ -40,6 +42,19 @@ class User_Model extends CommonDBModel
         else
         {
             $this->val_errors = array_merge($this->val_errors, $validator->getErrors());
+            return false;
+        }
+    }
+
+    public function isEmailValidFormat($email)
+    {
+        if(filter_var($email, FILTER_VALIDATE_EMAIL))
+        {
+            return true;
+        }
+        else
+        {
+            $this->val_errors[] = "Email supplied was not formatted correctly";
             return false;
         }
     }
