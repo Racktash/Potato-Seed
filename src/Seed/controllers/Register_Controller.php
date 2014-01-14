@@ -7,11 +7,11 @@ class Register_Controller extends Controller
     {
         if($this->registerAttemptPresent())
         {
-            if($this->inputValid())
+            if($this->isInputValid())
             {
                 try
                 {
-                    $this->attemptRegister();
+                    $this->attemptRegistration();
                     $this->registrationSuccessful();
                 }
                 catch(Exception $e)
@@ -46,7 +46,25 @@ class Register_Controller extends Controller
         $this->setInnerView(REGISTRY_REGISTER_VIEW_FORM);
     }
 
-    private function inputValid()
+    private function isInputValid()
+    {
+        $presence_valid = $this->isInputPresent();
+
+        if($presence_valid)
+        {
+            $spam_valid = $this->isSpamAnsweredCorrectly();
+            $passwords_valid = $this->doPasswordsMatch();
+        }
+        else
+        {
+            $spam_valid = false;
+            $passwords_valid = false;
+        }
+
+        return ($presence_valid and $passwords_valid and $spam_valid);
+    }
+
+    private function isInputPresent()
     {
         $validator = new Validator($this->getInputArray());
 
@@ -56,29 +74,37 @@ class Register_Controller extends Controller
         $validator->newRule("email", "Email address", "required");
         $validator->newRule("spam", "Spam check", "required");
 
-        $presence_valid = $validator->allValid();
+        $valid = $validator->allValid();
 
-        $spam_valid = true;
-        if($presence_valid and strtolower($this->getInputParam("spam")) != strtolower(REGISTRY_SPAM_ANSWER))
-        {
-            $this->addValidationError("Spam question not answered correctly.");
-            $spam_valid = false;
-        }
-        
         if(count($validator->getErrors()) > 0)
         {
             foreach($validator->getErrors() as $error)
                 $this->addValidationError($error);
         }
 
+        return $valid;
+    }
+
+    private function isSpamAnsweredCorrectly()
+    {
+        if(strtolower($this->getInputParam("spam")) != strtolower(REGISTRY_SPAM_ANSWER))
+        {
+            $this->addValidationError("Spam question not answered correctly.");
+            return false;
+        }
+        return true;
+    }
+
+    private function doPasswordsMatch()
+    {
         $passwords_valid = ($this->getInputParam("password1") == $this->getInputParam("password2"));
 
         if(!$passwords_valid) $this->addValidationError("Passwords must match");
 
-        return ($presence_valid and $passwords_valid and $spam_valid);
+        return $passwords_valid;
     }
 
-    protected function attemptRegister()
+    protected function attemptRegistration()
     {
         $this->user_mdl = new User_Model(db\newPDO());
         $user["username"] = display\alphanum($this->getInputParam("username"));
@@ -87,7 +113,7 @@ class Register_Controller extends Controller
         $user["lower"] = $formatted_username_password["username"];
         $user["password"] = $formatted_username_password["password"];
         $user["email"] = display\email($this->getInputParam("email"));
-        $user["joinDate"] = date("jth F o");
+        $user["joinDate"] = date("jth F o"); //xth Month YYYY
 
         $this->user_mdl->insert($user);
     }

@@ -20,7 +20,7 @@ class TestableRegister_Controller extends Register_Controller
         $this->test_input = $input_array;
     }
 
-    protected function attemptRegister()
+    protected function attemptRegistration()
     {
         if($this->getInputParam("username") == "existinguser")
         {
