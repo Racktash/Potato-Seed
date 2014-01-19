@@ -62,8 +62,17 @@ class LoggedIn
 
     private static function checkDatabase()
     {
-        return self::$session_model->isSessionValid(self::getCookieValue(REGISTRY_COOKIES_USER),
-                                                     self::getCookieValue(REGISTRY_COOKIES_SESSION));
+        if( self::$session_model->isSessionValid(self::getCookieValue(REGISTRY_COOKIES_USER),
+                                                     self::getCookieValue(REGISTRY_COOKIES_SESSION)))
+        {
+            self::$user_id = intval(self::getCookieValue(REGISTRY_COOKIES_USER));
+            return true;
+        }
+    }
+
+    public static function getUserID()
+    {
+        return self::$user_id;
     }
 
     public static function isLoggedIn()

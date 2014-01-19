@@ -92,5 +92,24 @@ class LoggedInTest extends PHPUnit_Framework_TestCase
 
         $this->assertTrue(LoggedIn::isLoggedIn());
     }
+
+    public function test_getUserID_ValidSessionInfo_ReturnsID()
+    {
+        $this->prepareLoggedIn();
+        $fake_cookie_array = $this->generateFakeCookieArray(1, "53.2");
+        LoggedIn::setCookiesArray($fake_cookie_array);
+        $logged_in = LoggedIn::isLoggedIn();
+
+        $this->assertEquals(LoggedIn::getUserID(), 1);
+    }
+
+    public function test_getUserID_NoLoginCheck_ReturnsNull()
+    {
+        $this->prepareLoggedIn();
+        $fake_cookie_array = $this->generateFakeCookieArray(1, "53.2");
+        LoggedIn::setCookiesArray($fake_cookie_array);
+
+        $this->assertEquals(LoggedIn::getUserID(), null);
+    }
 }
 ?>
