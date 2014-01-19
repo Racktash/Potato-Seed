@@ -6,6 +6,7 @@ class LoggedIn
 	private static $loggedin = false;
 	private static $checked = false;
     private static $cookies_array = null;
+    private static $loggedin_model = null;
 
     public static function reset()
     {
@@ -18,6 +19,11 @@ class LoggedIn
     public static function setCookiesArray($array)
     {
         self::$cookies_array = $array;
+    }
+
+    public static function setLoggedInModel($loggedin_model)
+    {
+        self::$loggedin_model = $loggedin_model;
     }
 
     private static function isCookieSet($key)
@@ -54,15 +60,29 @@ class LoggedIn
         }
     }
 
+    private static function checkDatabase()
+    {
+        return self::$loggedin_model->isSessionValid(self::getCookieValue(REGISTRY_COOKIES_USER),
+                                                     self::getCookieValue(REGISTRY_COOKIES_SESSION));
+    }
+
     public static function isLoggedIn()
     {
         if(self::$cookies_array == null)
             self::$cookies_array = $_COOKIE;
 
+        if(self::$loggedin_model == null)
+            self::$loggedin_model = new Loggedin_Model();
+
         if(!self::$checked)
         {
             $cookies_check = self::checkCookies();
-            self::$loggedin = $cookies_check;
+
+            $db_check = false;
+            if($cookies_check) $db_check = self::checkDatabase();
+
+            self::$loggedin = ($cookies_check and $db_check);
+            self::$checked = true;
 
             return self::$loggedin;
         }
