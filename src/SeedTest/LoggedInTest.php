@@ -2,15 +2,15 @@
 define("REGISTRY_COOKIES_USER", "ps_user");
 define("REGISTRY_COOKIES_SESSION", "ps_session");
 require_once 'Seed/entities/LoggedIn.php';
-require_once 'SeedTestHelpers/FakeLoggedin_Model.php';
+require_once 'SeedTestHelpers/FakeSession_Model.php';
 
 class LoggedInTest extends PHPUnit_Framework_TestCase
 {
     private function prepareLoggedIn()
     {
         LoggedIn::reset();
-        $fake_loggedin_model = new FakeLoggedin_Model();
-        LoggedIn::setLoggedInModel($fake_loggedin_model);
+        $fake_session_model = new FakeSession_Model();
+        LoggedIn::setSessionModel($fake_session_model);
     }
 
     private function generateFakeCookieArray($userid, $session)

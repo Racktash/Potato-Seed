@@ -56,5 +56,26 @@ class Session_Model extends CommonDBModel
         setcookie(REGISTRY_COOKIES_USER, intval($session["userid"]), time() + $time_to_expire, REGISTRY_COOKIE_PATH, REGISTRY_COOKIE_DOMAIN);
         setcookie(REGISTRY_COOKIES_SESSION, $code, time() + $time_to_expire, REGISTRY_COOKIE_PATH, REGISTRY_COOKIE_DOMAIN);
     }
+
+    public function isSessionValid($userid, $sessionid)
+    {
+        $session_ar = explode(".", $sessionid);
+        if(count($session_ar) != 2) return false;
+
+        try
+        {
+            $session = $this->find(array("userid"=>$userid, "code1"=>$session_ar[0],
+                              "code2"=>$session_ar[1]));
+            $unix_epoch = date("U");
+            if($unix_epoch >= $session->expires) return false;
+
+            return true;
+        }
+        catch(Exception $e)
+        {
+            return false;
+        }
+
+    }
 }
 ?>

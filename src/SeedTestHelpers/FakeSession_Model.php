@@ -1,5 +1,5 @@
 <?php
-class FakeLoggedin_Model
+class FakeSession_Model
 {
     public function isSessionValid($userid, $sessionid)
     {
