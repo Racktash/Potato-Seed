@@ -3,6 +3,7 @@ define("REGISTRY_COOKIES_USER", "ps_user");
 define("REGISTRY_COOKIES_SESSION", "ps_session");
 require_once 'Seed/entities/LoggedIn.php';
 require_once 'SeedTestHelpers/FakeSession_Model.php';
+require_once 'SeedTestHelpers/FakeUser_Model.php';
 
 class LoggedInTest extends PHPUnit_Framework_TestCase
 {
@@ -10,7 +11,9 @@ class LoggedInTest extends PHPUnit_Framework_TestCase
     {
         LoggedIn::reset();
         $fake_session_model = new FakeSession_Model();
+        $fake_user_model = new FakeUser_Model();
         LoggedIn::setSessionModel($fake_session_model);
+        LoggedIn::setUserModel($fake_user_model);
     }
 
     private function generateFakeCookieArray($userid, $session)
@@ -91,6 +94,15 @@ class LoggedInTest extends PHPUnit_Framework_TestCase
         LoggedIn::setCookiesArray($fake_cookie_array);
 
         $this->assertTrue(LoggedIn::isLoggedIn());
+    }
+    
+    public function test_isLoggedIn_ValidSessionNonExistingUser_ReturnsFalse()
+    {
+        $this->prepareLoggedIn();
+        $fake_cookie_array = $this->generateFakeCookieArray(2, "53.2");
+        LoggedIn::setCookiesArray($fake_cookie_array);
+
+        $this->assertFalse(LoggedIn::isLoggedIn());
     }
 
     public function test_getUserID_ValidSessionInfo_ReturnsID()

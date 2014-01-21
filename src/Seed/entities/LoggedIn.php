@@ -7,6 +7,7 @@ class LoggedIn
 	private static $checked = false;
     private static $cookies_array = null;
     private static $session_model = null;
+    private static $user_model = null;
 
     public static function reset()
     {
@@ -19,6 +20,11 @@ class LoggedIn
     public static function setCookiesArray($array)
     {
         self::$cookies_array = $array;
+    }
+
+    public static function setUserModel($user_model)
+    {
+        self::$user_model = $user_model;
     }
 
     public static function setSessionModel($session_model)
@@ -62,11 +68,35 @@ class LoggedIn
 
     private static function checkDatabase()
     {
+        $valid_session = self::checkSession();
+        $valid_user = self::checkUser();
+        return ($valid_session and $valid_user);
+    }
+
+    private static function checkSession()
+    {
         if( self::$session_model->isSessionValid(self::getCookieValue(REGISTRY_COOKIES_USER),
                                                      self::getCookieValue(REGISTRY_COOKIES_SESSION)))
         {
             self::$user_id = intval(self::getCookieValue(REGISTRY_COOKIES_USER));
             return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private static function checkUser()
+    {
+        try
+        {
+            $user = self::$user_model->find(array("id"=>self::getCookieValue(REGISTRY_COOKIES_USER)));
+            return true;
+        }
+        catch(Exception $e)
+        {
+            return false;
         }
     }
 
@@ -82,6 +112,9 @@ class LoggedIn
 
         if(self::$session_model == null)
             self::$session_model = new Session_Model(db\newPDO());
+
+        if(self::$user_model == null)
+            self::$user_model = new User_Model(db\newPDO());
 
         if(!self::$checked)
         {

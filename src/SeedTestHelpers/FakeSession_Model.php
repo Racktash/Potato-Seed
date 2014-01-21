@@ -7,6 +7,10 @@ class FakeSession_Model
         {
             return true;
         }
+        else if($userid == 2 and $sessionid == "53.2")
+        {
+            return true;
+        }
         else
         {
             return false;
