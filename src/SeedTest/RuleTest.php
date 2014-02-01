@@ -3,6 +3,13 @@ require_once 'Seed/entities/Rule.php';
 
 class RuleTest extends PHPUnit_Framework_TestCase
 {
+    public function test_setRequired_ValidInt_ReturnsTrue()
+    {
+        $rule = new Rule(intval(0), "Example Field");
+        $rule->setRequired();
+        $this->assertTrue($rule->isValid());
+    }
+
     public function test_setRequired_ValidString_ReturnsTrue()
     {
         $rule = new Rule("The sleeping dog...", "Example Field");
