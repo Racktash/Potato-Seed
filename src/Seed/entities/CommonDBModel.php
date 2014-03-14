@@ -137,5 +137,10 @@ abstract class CommonDBModel extends DBModel
     {
         return $this->val_errors;
     }
+
+    public function lastInsertId()
+    {
+        return $this->handle->lastInsertId();
+    }
 }
 ?>
