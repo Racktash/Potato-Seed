@@ -142,5 +142,20 @@ abstract class CommonDBModel extends DBModel
     {
         return $this->handle->lastInsertId();
     }
+
+    public function beginTransaction()
+    {
+        $this->handle->beginTransaction();
+    }
+
+    public function rollBack()
+    {
+        $this->handle->rollBack();
+    }
+
+    public function commit()
+    {
+        $this->handle->commit();
+    }
 }
 ?>
